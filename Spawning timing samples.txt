@@ -1,0 +1,24 @@
+20160629 - Paid for 6 lanes with 3 samples per lane for library prep and sequencing 2 x 150 on MiSeq at HIMB
+
+Placed samples in box for Amy
+Sample IDs See Excel file and JPG notebook for details
+T4-1
+T4-6
+T4-8
+T4-10
+T4-16
+T4-17
+
+T5-1
+T5-6
+T5-8
+T5-10
+T5-16
+T5-17
+
+T7-1
+T7-6
+T7-8
+T7-10
+T7-16
+T7-17
