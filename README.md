@@ -15,7 +15,7 @@ This project examines gene expression during the spawning cycle of corals that d
 ## Data Description
 
 **Sample.ID** | **Date** | **Time** | **Spawn** | **Read.ID** | **File.ID** | **Read.Count**  
- ------ | ------ | ------ | ------ | ------ | ------
+ ------ | ------ | ------ | ------ | ------ | ------ | ------ 
 T4-1 | 6/6/16 | 18:00 | NO | Read1 | T4-1_S1_L001_R1_001.fastq.gz |
 T4-1 | 6/6/16 | 18:00 | NO | Read2 | T4-1_S1_L001_R2_001.fastq.gz |
 T4-6 | 6/6/16 | 18:00 | NO | Read1 | T4-6_S1_L001_R1_001.fastq.gz |
