@@ -7,50 +7,83 @@ Authors:
 Journal:   
 Link:   
 Description: 
+This project examines gene expression during the spawning cycle of corals that did and did not spawn. Samples were collected from 3 replicate _Montipora capitata_ colonies for each condition at 18:00, 20:00 and 00:00 the night of 6/6/16. RNA extracted from samples was prepped using Illumina TruSeq Sample Prep v2 Guide and sequenced 2x150bp on the Illumina MiSeq.
  
 
 
 
 ## Data Description
-T4-1
-T4-6
-T4-8
-T4-10
-T4-16
-T4-17
 
-T5-1
-T5-6
-T5-8
-T5-10
-T5-16
-T5-17
+**Sample.ID** | **Date** | **Time** | **Spawn** | **Read.ID** | **File.ID** | **Read.Count**  
+ ------ | ------ | ------ | ------ | ------ | ------
+T4-1 | 6/6/16 | 18:00 | NO | Read1 | T4-1_S1_L001_R1_001.fastq.gz |
+T4-1 | 6/6/16 | 18:00 | NO | Read2 | T4-1_S1_L001_R2_001.fastq.gz |
+T4-6 | 6/6/16 | 18:00 | NO | Read1 | T4-6_S1_L001_R1_001.fastq.gz |
+T4-6 | 6/6/16 | 18:00 | NO | Read2 | T4-6_S1_L001_R2_001.fastq.gz |
+T4-8 | 6/6/16 | 18:00 | YES | Read1 | T4-8_S1_L001_R1_001.fastq.gz |
+T4-8 | 6/6/16 | 18:00 | YES | Read2 | T4-8_S1_L001_R2_001.fastq.gz |
+T4-10 | 6/6/16 | 18:00 | YES | Read1 | T4-10_S1_L001_R1_001.fastq.gz |
+T4-10 | 6/6/16 | 18:00 | YES | Read2 | T4-10_S1_L001_R2_001.fastq.gz |
+T4-16 | 6/6/16 | 18:00 | YES | Read1 | T4-16_S1_L001_R1_001.fastq.gz |
+T4-16 | 6/6/16 | 18:00 | YES | Read2 | T4-16_S1_L001_R2_001.fastq.gz |
+T4-17 | 6/6/16 | 18:00 | NO | Read1 | T4-17_S1_L001_R1_001.fastq.gz |
+T4-17 | 6/6/16 | 18:00 | NO | Read2 | T4-17_S1_L001_R2_001.fastq.gz |
+T5-1 | 6/6/16 | 20:00 | NO | Read1 | T5-1_S1_L001_R1_001.fastq.gz |
+T5-1 | 6/6/16 | 20:00 | NO | Read2 | T5-1_S1_L001_R2_001.fastq.gz |
+T5-6 | 6/6/16 | 20:00 | NO | Read1 | T5-6_S1_L001_R1_001.fastq.gz |
+T5-6 | 6/6/16 | 20:00 | NO | Read2 | T5-6_S1_L001_R2_001.fastq.gz |
+T5-8 | 6/6/16 | 20:00 | YES | Read1 | T5-8_S1_L001_R1_001.fastq.gz |
+T5-8 | 6/6/16 | 20:00 | YES | Read2 | T5-8_S1_L001_R2_001.fastq.gz |
+T5-10 | 6/6/16 | 20:00 | YES | Read1 | T5-10_S1_L001_R1_001.fastq.gz |
+T5-10 | 6/6/16 | 20:00 | YES | Read2 | T5-10_S1_L001_R2_001.fastq.gz |
+T5-16 | 6/6/16 | 20:00 | YES | Read1 | T5-16_S1_L001_R1_001.fastq.gz |
+T5-16 | 6/6/16 | 20:00 | YES | Read2 | T5-16_S1_L001_R2_001.fastq.gz |
+T5-17 | 6/6/16 | 20:00 | NO | Read1 | T5-17_S1_L001_R1_001.fastq.gz |
+T5-17 | 6/6/16 | 20:00 | NO | Read2 | T5-17_S1_L001_R2_001.fastq.gz |
+T7-1 | 6/7/16 | 00:00 | NO | Read1 | T7-1_S1_L001_R1_001.fastq.gz |
+T7-1 | 6/7/16 | 00:00 | NO | Read2 | T7-1_S1_L001_R2_001.fastq.gz |
+T7-6 | 6/7/16 | 00:00 | NO | Read1 | T7-6_S1_L001_R1_001.fastq.gz |
+T7-6 | 6/7/16 | 00:00 | NO | Read2 | T7-6_S1_L001_R2_001.fastq.gz |
+T7-8 | 6/7/16 | 00:00 | YES | Read1 | T7-8_S1_L001_R1_001.fastq.gz |
+T7-8 | 6/7/16 | 00:00 | YES | Read2 | T7-8_S1_L001_R2_001.fastq.gz |
+T7-10 | 6/7/16 | 00:00 | YES | Read1 | T7-10_S1_L001_R1_001.fastq.gz |
+T7-10 | 6/7/16 | 00:00 | YES | Read2 | T7-10_S1_L001_R2_001.fastq.gz |
+T7-16 | 6/7/16 | 00:00 | YES | Read1 | T7-16_S1_L001_R1_001.fastq.gz |
+T7-16 | 6/7/16 | 00:00 | YES | Read2 | T7-16_S1_L001_R2_001.fastq.gz |
+T7-17 | 6/7/16 | 00:00 | NO | Read1 | T7-17_S1_L001_R1_001.fastq.gz |
+T7-17 | 6/7/16 | 00:00 | NO | Read2 | T7-17_S1_L001_R2_001.fastq.gz |
 
-T7-1
-T7-6
-T7-8
-T7-10
-T7-16
-T7-17
+
 
 6 lanes with 3 samples per lane for library prep and sequencing 2 x 150 on MiSeq at HIMB
 Samples submitted: 20160629
 Estimated Seq Oct 2016
 
-## Notes about files
+## Notes about Files
+
+# Directory Structure
 
 
-## Files:
+## notebooks:
+Jupyter Notebook files for bioinformatic analysis
 
+## Processing:
+Quality and quantity results from RNA extraction and library preparation 
 
-## Scripts: 
+## Protocols:
+Sample processing protocols for RNA extraction and library preparation
 
-	
-## Data:
+## RAnalysis:
+	### Data
+	### Output
+	### Scripts
 
-
-## Output: 
-	The directory containing the analysis results, figures, tables, and supplementary material.
+## SEQ_Data:
+	### Clean_Data
+	### Cleaned_QC_Files
+	### Raw_Data
+	### Raw_QC_Files
+ 
 
 
 
