@@ -1,0 +1,9 @@
+Col1_Time4	T4-1	Time4	18:00	6-Jun-16	NO
+Col6_Time4	T4-6	Time4	18:00	6-Jun-16	NO
+Col8_Time4	T4-8	Time4	18:00	6-Jun-16	YES
+Col1_Time5	T5-1	Time5	20:00	6-Jun-16	NO
+Col6_Time5	T5-6	Time5	20:00	6-Jun-16	NO
+Col8_Time5	T5-8	Time5	20:00	6-Jun-16	YES
+Col1_Time7	T7-1	Time7	0:00	7-Jun-16	NO
+Col6_Time7	T7-6	Time7	0:00	7-Jun-16	NO
+Col8_Time7	T7-8	Time7	0:00	7-Jun-16	YES
