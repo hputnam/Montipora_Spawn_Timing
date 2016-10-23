@@ -85,8 +85,6 @@ GATCGGAAGAGCACACGTCTGAACTCCAGTCAATTCCTAATCTCGTATGCCGTCTTCTGCTTG
 * T7-8_S3_L001_R1_001.fastq.gz:4055930
 * T7-8_S3_L001_R2_001.fastq.gz:4055930
 
-
-
 #Run FASTQC to examine data quality
 ```/home/hputnam/programs/FastQC/fastqc /home/hputnam/Mcap_Spawn/Data/Raw_Data/*fastq.gz -o /home/hputnam/Mcap_Spawn/Data/Raw_QC_Files```
 
@@ -185,24 +183,25 @@ https://github.com/ExpressionAnalysis/ea-utils
 
 # Count Cleaned Reads
 ```grep -c "@M" /home/hputnam/Mcap_Spawn/Data/cleaned/*.fastq```
-/home/hputnam/Mcap_Spawn/Data/cleaned/T4-1_S1_L001_R1_001_cleaned.fastq:3434704
-/home/hputnam/Mcap_Spawn/Data/cleaned/T4-1_S1_L001_R2_001_cleaned.fastq:3434704
-/home/hputnam/Mcap_Spawn/Data/cleaned/T4-6_S1_L001_R1_001_cleaned.fastq:4065700
-/home/hputnam/Mcap_Spawn/Data/cleaned/T4-6_S1_L001_R2_001_cleaned.fastq:4065700
-/home/hputnam/Mcap_Spawn/Data/cleaned/T4-8_S1_L001_R1_001_cleaned.fastq:5053922
-/home/hputnam/Mcap_Spawn/Data/cleaned/T4-8_S1_L001_R2_001_cleaned.fastq:5053922
-/home/hputnam/Mcap_Spawn/Data/cleaned/T5-1_S2_L001_R1_001_cleaned.fastq:3274961
-/home/hputnam/Mcap_Spawn/Data/cleaned/T5-1_S2_L001_R2_001_cleaned.fastq:3274961
-/home/hputnam/Mcap_Spawn/Data/cleaned/T5-6_S2_L001_R1_001_cleaned.fastq:4504000
-/home/hputnam/Mcap_Spawn/Data/cleaned/T5-6_S2_L001_R2_001_cleaned.fastq:4504000
-/home/hputnam/Mcap_Spawn/Data/cleaned/T5-8_S2_L001_R1_001_cleaned.fastq:5251537
-/home/hputnam/Mcap_Spawn/Data/cleaned/T5-8_S2_L001_R2_001_cleaned.fastq:5251537
-/home/hputnam/Mcap_Spawn/Data/cleaned/T7-1_S3_L001_R1_001_cleaned.fastq:3475482
-/home/hputnam/Mcap_Spawn/Data/cleaned/T7-1_S3_L001_R2_001_cleaned.fastq:3475482
-/home/hputnam/Mcap_Spawn/Data/cleaned/T7-6_S3_L001_R1_001_cleaned.fastq:4174182
-/home/hputnam/Mcap_Spawn/Data/cleaned/T7-6_S3_L001_R2_001_cleaned.fastq:4174182
-/home/hputnam/Mcap_Spawn/Data/cleaned/T7-8_S3_L001_R1_001_cleaned.fastq:4051635
-/home/hputnam/Mcap_Spawn/Data/cleaned/T7-8_S3_L001_R2_001_cleaned.fastq:4051635
+
+* /home/hputnam/Mcap_Spawn/Data/cleaned/T4-1_S1_L001_R1_001_cleaned.fastq:3434704
+* /home/hputnam/Mcap_Spawn/Data/cleaned/T4-1_S1_L001_R2_001_cleaned.fastq:3434704
+* /home/hputnam/Mcap_Spawn/Data/cleaned/T4-6_S1_L001_R1_001_cleaned.fastq:4065700
+* /home/hputnam/Mcap_Spawn/Data/cleaned/T4-6_S1_L001_R2_001_cleaned.fastq:4065700
+* /home/hputnam/Mcap_Spawn/Data/cleaned/T4-8_S1_L001_R1_001_cleaned.fastq:5053922
+* /home/hputnam/Mcap_Spawn/Data/cleaned/T4-8_S1_L001_R2_001_cleaned.fastq:5053922
+* /home/hputnam/Mcap_Spawn/Data/cleaned/T5-1_S2_L001_R1_001_cleaned.fastq:3274961
+* /home/hputnam/Mcap_Spawn/Data/cleaned/T5-1_S2_L001_R2_001_cleaned.fastq:3274961
+* /home/hputnam/Mcap_Spawn/Data/cleaned/T5-6_S2_L001_R1_001_cleaned.fastq:4504000
+* /home/hputnam/Mcap_Spawn/Data/cleaned/T5-6_S2_L001_R2_001_cleaned.fastq:4504000
+* /home/hputnam/Mcap_Spawn/Data/cleaned/T5-8_S2_L001_R1_001_cleaned.fastq:5251537
+* /home/hputnam/Mcap_Spawn/Data/cleaned/T5-8_S2_L001_R2_001_cleaned.fastq:5251537
+* /home/hputnam/Mcap_Spawn/Data/cleaned/T7-1_S3_L001_R1_001_cleaned.fastq:3475482
+* /home/hputnam/Mcap_Spawn/Data/cleaned/T7-1_S3_L001_R2_001_cleaned.fastq:3475482
+* /home/hputnam/Mcap_Spawn/Data/cleaned/T7-6_S3_L001_R1_001_cleaned.fastq:4174182
+* /home/hputnam/Mcap_Spawn/Data/cleaned/T7-6_S3_L001_R2_001_cleaned.fastq:4174182
+* /home/hputnam/Mcap_Spawn/Data/cleaned/T7-8_S3_L001_R1_001_cleaned.fastq:4051635
+* /home/hputnam/Mcap_Spawn/Data/cleaned/T7-8_S3_L001_R2_001_cleaned.fastq:4051635
 
 #Run Fastqc on cleaned files
 ```mkdir /home/hputnam/Mcap_Spawn/Data/cleaned_QC_Files```
@@ -220,8 +219,8 @@ https://github.com/ExpressionAnalysis/ea-utils
 # Count Reads
 ```grep -c "@M" /home/hputnam/Mcap_Spawn/Data/cleaned/*clean.fastq```
 
->/home/hputnam/Mcap_Spawn/Data/cleaned/all_R1_clean.fastq:37286123
-/home/hputnam/Mcap_Spawn/Data/cleaned/all_R2_clean.fastq:37286123
+* /home/hputnam/Mcap_Spawn/Data/cleaned/all_R1_clean.fastq:37286123
+* /home/hputnam/Mcap_Spawn/Data/cleaned/all_R2_clean.fastq:37286123
 
 
 #Run Trinity de novo assembly
