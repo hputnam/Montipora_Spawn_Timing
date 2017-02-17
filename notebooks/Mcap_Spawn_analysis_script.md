@@ -8,10 +8,10 @@ ssh hputnam@galaxy.geodata.hawaii.edu
 # Used the following adapter files to make barcodes file
 >TruSeq_universal_F
 AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT
-> Genomic_DNA_oligonucleotide_sequences_Adapters_F
-GATCGGAAGAGCTCGTATGCCGTCTTCTGCTTG
-> Genomic_DNA_oligonucleotide_sequences_Adapters_R
-ACACTCTTTCCCTACACGACGCTCTTCCGATCT
+> Genomic_DNA_oligonucleotide_sequences_Adapters
+AGATCGGAAGAGCACACGTCTGAACTCCAGTCA
+> Genomic_DNA_oligonucleotide_sequences_Adapters_Read2
+AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
 > Genomic_DNA_Sequencing_Primer
 ACACTCTTTCCCTACACGACGCTCTTCCGATCT
 >TruSeq_idx_Adapter_AR001
@@ -113,6 +113,9 @@ https://github.com/ExpressionAnalysis/ea-utils
 -P = Phred-scale default = auto
 
 #FastqMcf 
+Need to write a loop to do this
+
+
 ## Time 4 
 ```/home/hputnam/programs/ea-utils.1.1.2-806/fastq-mcf -l 16 -q 20 -w 5 -x 10 -u -P 33 \
 /home/hputnam/Mcap_Spawn/Refs/barcodes.fa \
@@ -279,7 +282,11 @@ https://github.com/ExpressionAnalysis/ea-utils
 
 /usr/local/opt/trinityrnaseq/Analysis/DifferentialExpression/run_DE_analysis.pl --matrix /home/hputnam/Mcap_Spawn/RSEM/isoforms_counts_matrix.counts.matrix --method edgeR --samples_file /home/hputnam/Mcap_Spawn/Refs/sample_description.txt 
 
-# Cluster DEG
+# Cluster DEG_fpkm
 /usr/local/opt/trinityrnaseq/Analysis/DifferentialExpression/analyze_diff_expr.pl --matrix /home/hputnam/Mcap_Spawn/RSEM/isoforms_counts_matrix.TMM.fpkm.matrix -P 0.05 -C 0 --samples /home/hputnam/Mcap_Spawn/Refs/sample_description.txt 
 
+
+# Cluster Expression Profiles
+/usr/local/opt/trinityrnaseq/Analysis/DifferentialExpression//define_clusters_by_cutting_tree.pl \
+-R  diffExpr.P0.05_C0.matrix.RData --Ptree 60
 
