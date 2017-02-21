@@ -2,10 +2,94 @@
 Data uploaded and analyzed on Poire 
 ssh hputnam@galaxy.geodata.hawaii.edu
 
-# Upload data to server
-```scp -r /Users/hputnam/MyProjects/Montipora_Spawn_Timing/Data/H_Putnam_RNA_run1-32840854 hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Data```
+### Upload data to server
+```scp -r /Volumes/NGS_DATA/Hawaii_Mcap/Spawn_2016 hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Data```
 
-# Used the following adapter files to make barcodes file
+### Check upload completion
+* match Original 20161208_checksum.md5 with new upload checksum file
+ 
+```md5sum *.gz > 20170220_server_checksum.md5```
+
+>20161208_checksum.md5
+
+* MD5 (T4-1-includes-adapter_S1_L001_R1_001.fastq.gz) = 0d034de745024ef1f3a0a808fb814da2
+* MD5 (T4-1-includes-adapter_S1_L001_R2_001.fastq.gz) = e6a8619819ae4ebbda76fab1c16d2ee5
+* MD5 (T4-10-includes-adapter_S1_L001_R1_001.fastq.gz) = ee119a26764c90fc2f958d104a75fd9f
+* MD5 (T4-10-includes-adapter_S1_L001_R2_001.fastq.gz) = 3c572aa147718915633c86e707269aba
+* MD5 (T4-16-includes-adapter_S1_L001_R1_001.fastq.gz) = 23369f48d9c8a09cdcbf3360c5d98af9
+* MD5 (T4-16-includes-adapter_S1_L001_R2_001.fastq.gz) = e3a48c6186b0869b94ccc70df65310cd
+* MD5 (T4-17-includes-adapter_S1_L001_R1_001.fastq.gz) = 42e199deae9b280dc0c4c46c3eace29b
+* MD5 (T4-17-includes-adapter_S1_L001_R2_001.fastq.gz) = c539fd52b0e5835007b81949bec37898
+* MD5 (T4-6-includes-adapter_S1_L001_R1_001.fastq.gz) = d2524a6fd255b15b3e3fb2dfe04b8912
+* MD5 (T4-6-includes-adapter_S1_L001_R2_001.fastq.gz) = 9eddbe1ab57021043a2971c07c3f9285
+* MD5 (T4-8-includes-adapter_S1_L001_R1_001.fastq.gz) = ecb64ffbedac95c4e3cbe0d473ef2236
+* MD5 (T4-8-includes-adapter_S1_L001_R2_001.fastq.gz) = 68755f4a785e6b5723674370dfc3974d
+* MD5 (T5-1-includes-adapter_S2_L001_R1_001.fastq.gz) = 06eed3df093f468027e006cd61b71c1a
+* MD5 (T5-1-includes-adapter_S2_L001_R2_001.fastq.gz) = f462023d1207004cd4d0e1145407bbff
+* MD5 (T5-10-includes-adapter_S2_L001_R1_001.fastq.gz) = 82cfe360bbba75e543aa89824e0beab4
+* MD5 (T5-10-includes-adapter_S2_L001_R2_001.fastq.gz) = 324d781e5a9897b745311d258871ebf3
+* MD5 (T5-16-includes-adapter_S2_L001_R1_001.fastq.gz) = c7b6251c673bad1a5c41358afb6432d8
+* MD5 (T5-16-includes-adapter_S2_L001_R2_001.fastq.gz) = 1e97f1615681b512901abc1a791617ae
+* MD5 (T5-17-includes-adapter_S2_L001_R1_001.fastq.gz) = e28b444af3380762f8181e49b3ec8639
+* MD5 (T5-17-includes-adapter_S2_L001_R2_001.fastq.gz) = a862e594e4c8a2f0ef0901d9f833777b
+* MD5 (T5-6-includes-adapter_S2_L001_R1_001.fastq.gz) = 2eeb28b45c5a000577755c830e36b7be
+* MD5 (T5-6-includes-adapter_S2_L001_R2_001.fastq.gz) = 020049d0cda29af60e90925afaa3b0c7
+* MD5 (T5-8-includes-adapter_S2_L001_R1_001.fastq.gz) = 4e8e1b60f5f8aea8769133e0f95e36c1
+* MD5 (T5-8-includes-adapter_S2_L001_R2_001.fastq.gz) = 4e62cb401dadfff0b8ebdd5e79a67348
+* MD5 (T7-1-includes-adapter_S3_L001_R1_001.fastq.gz) = 0a1c2963ed23888ee7fa18ce00f52497
+* MD5 (T7-1-includes-adapter_S3_L001_R2_001.fastq.gz) = 608079eadce5498ccab50c72d4ebef2c
+* MD5 (T7-10-includes-adapter_S3_L001_R1_001.fastq.gz) = 072e8d420b9cfb6939ffde8f5c264f5e
+* MD5 (T7-10-includes-adapter_S3_L001_R2_001.fastq.gz) = 7a2e6ae58b0c6e77ced5cb2fae082d4f
+* MD5 (T7-16-includes-adapter_S3_L001_R1_001.fastq.gz) = ef4537d0d48b7dd8b27f0abe4cbd17fd
+* MD5 (T7-16-includes-adapter_S3_L001_R2_001.fastq.gz) = a3ab869746c91eaacb6d402d47c7523b
+* MD5 (T7-17-includes-adapter_S3_L001_R1_001.fastq.gz) = f94c1468d7de02729c98b93f5f38347a
+* MD5 (T7-17-includes-adapter_S3_L001_R2_001.fastq.gz) = 3446a006926122041431f708cd6291d8
+* MD5 (T7-6-includes-adapter_S3_L001_R1_001.fastq.gz) = 0722ee9f7a97367403667f878329b9ba
+* MD5 (T7-6-includes-adapter_S3_L001_R2_001.fastq.gz) = 0202e6a634547b3275d318ebdf20dfe1
+* MD5 (T7-8-includes-adapter_S3_L001_R1_001.fastq.gz) = 820397dbcc084832ad34ba177cea411a
+* MD5 (T7-8-includes-adapter_S3_L001_R2_001.fastq.gz) = 5c8792e297e619d97a8f65cc1d2e6b24
+
+
+> 20170220_server_checksum.md5
+
+* ee119a26764c90fc2f958d104a75fd9f  T4-10-includes-adapter_S1_L001_R1_001.fastq.gz
+* 3c572aa147718915633c86e707269aba  T4-10-includes-adapter_S1_L001_R2_001.fastq.gz
+* 23369f48d9c8a09cdcbf3360c5d98af9  T4-16-includes-adapter_S1_L001_R1_001.fastq.gz
+* e3a48c6186b0869b94ccc70df65310cd  T4-16-includes-adapter_S1_L001_R2_001.fastq.gz
+* 42e199deae9b280dc0c4c46c3eace29b  T4-17-includes-adapter_S1_L001_R1_001.fastq.gz
+* c539fd52b0e5835007b81949bec37898  T4-17-includes-adapter_S1_L001_R2_001.fastq.gz
+* 0d034de745024ef1f3a0a808fb814da2  T4-1-includes-adapter_S1_L001_R1_001.fastq.gz
+* e6a8619819ae4ebbda76fab1c16d2ee5  T4-1-includes-adapter_S1_L001_R2_001.fastq.gz
+* d2524a6fd255b15b3e3fb2dfe04b8912  T4-6-includes-adapter_S1_L001_R1_001.fastq.gz
+* 9eddbe1ab57021043a2971c07c3f9285  T4-6-includes-adapter_S1_L001_R2_001.fastq.gz
+* ecb64ffbedac95c4e3cbe0d473ef2236  T4-8-includes-adapter_S1_L001_R1_001.fastq.gz
+* 68755f4a785e6b5723674370dfc3974d  T4-8-includes-adapter_S1_L001_R2_001.fastq.gz
+* 82cfe360bbba75e543aa89824e0beab4  T5-10-includes-adapter_S2_L001_R1_001.fastq.gz
+* 324d781e5a9897b745311d258871ebf3  T5-10-includes-adapter_S2_L001_R2_001.fastq.gz
+* c7b6251c673bad1a5c41358afb6432d8  T5-16-includes-adapter_S2_L001_R1_001.fastq.gz
+* 1e97f1615681b512901abc1a791617ae  T5-16-includes-adapter_S2_L001_R2_001.fastq.gz
+* e28b444af3380762f8181e49b3ec8639  T5-17-includes-adapter_S2_L001_R1_001.fastq.gz
+* a862e594e4c8a2f0ef0901d9f833777b  T5-17-includes-adapter_S2_L001_R2_001.fastq.gz
+* 06eed3df093f468027e006cd61b71c1a  T5-1-includes-adapter_S2_L001_R1_001.fastq.gz
+* f462023d1207004cd4d0e1145407bbff  T5-1-includes-adapter_S2_L001_R2_001.fastq.gz
+* 2eeb28b45c5a000577755c830e36b7be  T5-6-includes-adapter_S2_L001_R1_001.fastq.gz
+* 020049d0cda29af60e90925afaa3b0c7  T5-6-includes-adapter_S2_L001_R2_001.fastq.gz
+* 4e8e1b60f5f8aea8769133e0f95e36c1  T5-8-includes-adapter_S2_L001_R1_001.fastq.gz
+* 4e62cb401dadfff0b8ebdd5e79a67348  T5-8-includes-adapter_S2_L001_R2_001.fastq.gz
+* 072e8d420b9cfb6939ffde8f5c264f5e  T7-10-includes-adapter_S3_L001_R1_001.fastq.gz
+* 7a2e6ae58b0c6e77ced5cb2fae082d4f  T7-10-includes-adapter_S3_L001_R2_001.fastq.gz
+* ef4537d0d48b7dd8b27f0abe4cbd17fd  T7-16-includes-adapter_S3_L001_R1_001.fastq.gz
+* a3ab869746c91eaacb6d402d47c7523b  T7-16-includes-adapter_S3_L001_R2_001.fastq.gz
+* f94c1468d7de02729c98b93f5f38347a  T7-17-includes-adapter_S3_L001_R1_001.fastq.gz
+* 3446a006926122041431f708cd6291d8  T7-17-includes-adapter_S3_L001_R2_001.fastq.gz
+* 0a1c2963ed23888ee7fa18ce00f52497  T7-1-includes-adapter_S3_L001_R1_001.fastq.gz
+* 608079eadce5498ccab50c72d4ebef2c  T7-1-includes-adapter_S3_L001_R2_001.fastq.gz
+* 0722ee9f7a97367403667f878329b9ba  T7-6-includes-adapter_S3_L001_R1_001.fastq.gz
+* 0202e6a634547b3275d318ebdf20dfe1  T7-6-includes-adapter_S3_L001_R2_001.fastq.gz
+* 820397dbcc084832ad34ba177cea411a  T7-8-includes-adapter_S3_L001_R1_001.fastq.gz
+* 5c8792e297e619d97a8f65cc1d2e6b24  T7-8-includes-adapter_S3_L001_R2_001.fastq.gz
+
+### Used the following adapter files to make barcodes file
 >TruSeq_universal_F
 AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT
 > Genomic_DNA_oligonucleotide_sequences_Adapters
@@ -63,171 +147,115 @@ GATCGGAAGAGCACACGTCTGAACTCCAGTCAACTGATAATCTCGTATGCCGTCTTCTGCTTG
 >TruSeq_idx_Adapter_AR027
 GATCGGAAGAGCACACGTCTGAACTCCAGTCAATTCCTAATCTCGTATGCCGTCTTCTGCTTG
 
-# Count RAW Reads
+### Count RAW Reads
 ```zgrep -c "@M" *.fastq.gz```
 
-* T4-1_S1_L001_R1_001.fastq.gz:3438991
-* T4-1_S1_L001_R2_001.fastq.gz:3438991
-* T4-6_S1_L001_R1_001.fastq.gz:4070019
-* T4-6_S1_L001_R2_001.fastq.gz:4070019
-* T4-8_S1_L001_R1_001.fastq.gz:5059437
-* T4-8_S1_L001_R2_001.fastq.gz:5059437
-* T5-1_S2_L001_R1_001.fastq.gz:3278023
-* T5-1_S2_L001_R2_001.fastq.gz:3278023
-* T5-6_S2_L001_R1_001.fastq.gz:4508425
-* T5-6_S2_L001_R2_001.fastq.gz:4508425
-* T5-8_S2_L001_R1_001.fastq.gz:5257196
-* T5-8_S2_L001_R2_001.fastq.gz:5257196
-* T7-1_S3_L001_R1_001.fastq.gz:3480865
-* T7-1_S3_L001_R2_001.fastq.gz:3480865
-* T7-6_S3_L001_R1_001.fastq.gz:4179337
-* T7-6_S3_L001_R2_001.fastq.gz:4179337
-* T7-8_S3_L001_R1_001.fastq.gz:4055930
-* T7-8_S3_L001_R2_001.fastq.gz:4055930
+T4-10-includes-adapter_S1_L001_R1_001.fastq.gz:4192400
+T4-10-includes-adapter_S1_L001_R2_001.fastq.gz:4192400
+T4-16-includes-adapter_S1_L001_R1_001.fastq.gz:5728309
+T4-16-includes-adapter_S1_L001_R2_001.fastq.gz:5728309
+T4-17-includes-adapter_S1_L001_R1_001.fastq.gz:5685333
+T4-17-includes-adapter_S1_L001_R2_001.fastq.gz:5685333
+T4-1-includes-adapter_S1_L001_R1_001.fastq.gz:3438991
+T4-1-includes-adapter_S1_L001_R2_001.fastq.gz:3438991
+T4-6-includes-adapter_S1_L001_R1_001.fastq.gz:4070019
+T4-6-includes-adapter_S1_L001_R2_001.fastq.gz:4070019
+T4-8-includes-adapter_S1_L001_R1_001.fastq.gz:5059437
+T4-8-includes-adapter_S1_L001_R2_001.fastq.gz:5059437
+T5-10-includes-adapter_S2_L001_R1_001.fastq.gz:5182807
+T5-10-includes-adapter_S2_L001_R2_001.fastq.gz:5182807
+T5-16-includes-adapter_S2_L001_R1_001.fastq.gz:5054983
+T5-16-includes-adapter_S2_L001_R2_001.fastq.gz:5054983
+T5-17-includes-adapter_S2_L001_R1_001.fastq.gz:4777150
+T5-17-includes-adapter_S2_L001_R2_001.fastq.gz:4777150
+T5-1-includes-adapter_S2_L001_R1_001.fastq.gz:3278023
+T5-1-includes-adapter_S2_L001_R2_001.fastq.gz:3278023
+T5-6-includes-adapter_S2_L001_R1_001.fastq.gz:4508425
+T5-6-includes-adapter_S2_L001_R2_001.fastq.gz:4508425
+T5-8-includes-adapter_S2_L001_R1_001.fastq.gz:5257196
+T5-8-includes-adapter_S2_L001_R2_001.fastq.gz:5257196
+T7-10-includes-adapter_S3_L001_R1_001.fastq.gz:3767511
+T7-10-includes-adapter_S3_L001_R2_001.fastq.gz:3767511
+T7-16-includes-adapter_S3_L001_R1_001.fastq.gz:4661903
+T7-16-includes-adapter_S3_L001_R2_001.fastq.gz:4661903
+T7-17-includes-adapter_S3_L001_R1_001.fastq.gz:4349113
+T7-17-includes-adapter_S3_L001_R2_001.fastq.gz:4349113
+T7-1-includes-adapter_S3_L001_R1_001.fastq.gz:3480865
+T7-1-includes-adapter_S3_L001_R2_001.fastq.gz:3480865
+T7-6-includes-adapter_S3_L001_R1_001.fastq.gz:4179337
+T7-6-includes-adapter_S3_L001_R2_001.fastq.gz:4179337
+T7-8-includes-adapter_S3_L001_R1_001.fastq.gz:4055930
+T7-8-includes-adapter_S3_L001_R2_001.fastq.gz:4055930
 
-#Run FASTQC to examine data quality
-```/home/hputnam/programs/FastQC/fastqc /home/hputnam/Mcap_Spawn/Data/Raw_Data/*fastq.gz -o /home/hputnam/Mcap_Spawn/Data/Raw_QC_Files```
+### Run FASTQC to examine data quality
+```mkdir /home/hputnam/Mcap_Spawn/Data/Raw_QC_Files```
 
-#Examine FASTQC Results of raw files
-```scp -r hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Data/Raw_QC_Files //Users/hputnam/MyProjects/Montipora_Spawn_Timing/SEQ_Data/Raw_QC_Files```
+```/home/hputnam/programs/FastQC/fastqc /home/hputnam/Mcap_Spawn/Data/*fastq.gz -o /home/hputnam/Mcap_Spawn/Data/Raw_QC_Files```
+
+### Examine FASTQC Results of raw files
+```scp -r hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Data/Raw_QC_Files /Users/hputnam/MyProjects/Montipora_Spawn_Timing/Data/Raw_QC_File```
 
 
-#Run multicq from raw qc folder to combine results from all files
+### Run multicq from raw qc folder to combine results from all files
 http://multiqc.info/
 
 ```multiqc .```
 
-
-#Trim Adapters and poor quality
+### Trim Adapters and poor quality
 ```mkdir /home/hputnam/Mcap_Spawn/Data/cleaned/```
 
 ### Used FastqMcf fastq-mcf sequence quality filter, clipping and processor to trim adapters.
 https://expressionanalysis.github.io/ea-utils/
 https://github.com/ExpressionAnalysis/ea-utils
 -o = output
--l = minimum remaining sequence length (=150)
+-l = minimum remaining sequence length (=100)
 -q = quality threshold causing base removal (=20)
 -w = window size for quality trimming (=5)
 -x = 'N' bad read percentage causing cycle removal (=10)
 -u = Force disable/enable Illumina PF filtering default = auto
 -P = Phred-scale default = auto
 
-#FastqMcf 
-Need to write a loop to do this
+### FastqMcf 
+mkdir /home/hputnam/Mcap_Spawn/Data/Cleaned_Data
 
-
-## Time 4 
-```/home/hputnam/programs/ea-utils.1.1.2-806/fastq-mcf -l 16 -q 20 -w 5 -x 10 -u -P 33 \
+```nohup sh -c 'for file in "T4-10-includes-adapter_S1" "T4-16-includes-adapter_S1" "T4-17-includes-adapter_S1" "T4-1-includes-adapter_S1" "T4-6-includes-adapter_S1" "T4-8-includes-adapter_S1" "T5-10-includes-adapter_S2" "T5-16-includes-adapter_S2" "T5-17-includes-adapter_S2" "T5-1-includes-adapter_S2" "T5-6-includes-adapter_S2" "T5-8-includes-adapter_S2"  "T7-10-includes-adapter_S3" "T7-16-includes-adapter_S3" "T7-17-includes-adapter_S3" "T7-1-includes-adapter_S3" "T7-6-includes-adapter_S3" "T7-8-includes-adapter_S3" 
+do
+/home/hputnam/programs/ea-utils.1.1.2-806/fastq-mcf \
 /home/hputnam/Mcap_Spawn/Refs/barcodes.fa \
-/home/hputnam/Mcap_Spawn/Data/Raw_Data/T4-1_S1_L001_R1_001.fastq.gz \
-/home/hputnam/Mcap_Spawn/Data/Raw_Data/T4-1_S1_L001_R2_001.fastq.gz \
--o /home/hputnam/Mcap_Spawn/Data/cleaned/T4-1_S1_L001_R1_001_cleaned.fastq \
--o /home/hputnam/Mcap_Spawn/Data/cleaned/T4-1_S1_L001_R2_001_cleaned.fastq &>T4-1.log```
-
-```/home/hputnam/programs/ea-utils.1.1.2-806/fastq-mcf -l 16 -q 20 -w 5 -x 10 -u -P 33 \
-/home/hputnam/Mcap_Spawn/Refs/barcodes.fa \
-/home/hputnam/Mcap_Spawn/Data/Raw_Data/T4-6_S1_L001_R1_001.fastq.gz \
-/home/hputnam/Mcap_Spawn/Data/Raw_Data/T4-6_S1_L001_R2_001.fastq.gz \
--o /home/hputnam/Mcap_Spawn/Data/cleaned/T4-6_S1_L001_R1_001_cleaned.fastq \
--o /home/hputnam/Mcap_Spawn/Data/cleaned/T4-6_S1_L001_R2_001_cleaned.fastq &>T4-6.log```
-
-```/home/hputnam/programs/ea-utils.1.1.2-806/fastq-mcf -l 16 -q 20 -w 5 -x 10 -u -P 33 \
-/home/hputnam/Mcap_Spawn/Refs/barcodes.fa \
-/home/hputnam/Mcap_Spawn/Data/Raw_Data/T4-8_S1_L001_R1_001.fastq.gz \
-/home/hputnam/Mcap_Spawn/Data/Raw_Data/T4-8_S1_L001_R2_001.fastq.gz \
--o /home/hputnam/Mcap_Spawn/Data/cleaned/T4-8_S1_L001_R1_001_cleaned.fastq \
--o /home/hputnam/Mcap_Spawn/Data/cleaned/T4-8_S1_L001_R2_001_cleaned.fastq &>T4-8.log```
-
-## Time 5
-```/home/hputnam/programs/ea-utils.1.1.2-806/fastq-mcf -l 16 -q 20 -w 5 -x 10 -u -P 33 \
-/home/hputnam/Mcap_Spawn/Refs/barcodes.fa \
-/home/hputnam/Mcap_Spawn/Data/Raw_Data/T5-1_S2_L001_R1_001.fastq.gz \
-/home/hputnam/Mcap_Spawn/Data/Raw_Data/T5-1_S2_L001_R2_001.fastq.gz \
--o /home/hputnam/Mcap_Spawn/Data/cleaned/T5-1_S2_L001_R1_001_cleaned.fastq \
--o /home/hputnam/Mcap_Spawn/Data/cleaned/T5-1_S2_L001_R2_001_cleaned.fastq &>T5-1.log```
-
-```/home/hputnam/programs/ea-utils.1.1.2-806/fastq-mcf -l 16 -q 20 -w 5 -x 10 -u -P 33 \
-/home/hputnam/Mcap_Spawn/Refs/barcodes.fa \
-/home/hputnam/Mcap_Spawn/Data/Raw_Data/T5-6_S2_L001_R1_001.fastq.gz \
-/home/hputnam/Mcap_Spawn/Data/Raw_Data/T5-6_S2_L001_R2_001.fastq.gz \
--o /home/hputnam/Mcap_Spawn/Data/cleaned/T5-6_S2_L001_R1_001_cleaned.fastq \
--o /home/hputnam/Mcap_Spawn/Data/cleaned/T5-6_S2_L001_R2_001_cleaned.fastq &>T5-6.log```
-
-```/home/hputnam/programs/ea-utils.1.1.2-806/fastq-mcf -l 16 -q 20 -w 5 -x 10 -u -P 33 \
-/home/hputnam/Mcap_Spawn/Refs/barcodes.fa \
-/home/hputnam/Mcap_Spawn/Data/Raw_Data/T5-8_S2_L001_R1_001.fastq.gz \
-/home/hputnam/Mcap_Spawn/Data/Raw_Data/T5-8_S2_L001_R2_001.fastq.gz \
--o /home/hputnam/Mcap_Spawn/Data/cleaned/T5-8_S2_L001_R1_001_cleaned.fastq \
--o /home/hputnam/Mcap_Spawn/Data/cleaned/T5-8_S2_L001_R2_001_cleaned.fastq &>T5-8.log```
-
-
-## Time 7
-```/home/hputnam/programs/ea-utils.1.1.2-806/fastq-mcf -l 16 -q 20 -w 5 -x 10 -u -P 33 \
-/home/hputnam/Mcap_Spawn/Refs/barcodes.fa \
-/home/hputnam/Mcap_Spawn/Data/Raw_Data/T7-1_S3_L001_R1_001.fastq.gz \
-/home/hputnam/Mcap_Spawn/Data/Raw_Data/T7-1_S3_L001_R2_001.fastq.gz \
--o /home/hputnam/Mcap_Spawn/Data/cleaned/T7-1_S3_L001_R1_001_cleaned.fastq \
--o /home/hputnam/Mcap_Spawn/Data/cleaned/T7-1_S3_L001_R2_001_cleaned.fastq &>T7-1.log```
-
-```/home/hputnam/programs/ea-utils.1.1.2-806/fastq-mcf -l 16 -q 20 -w 5 -x 10 -u -P 33 \
-/home/hputnam/Mcap_Spawn/Refs/barcodes.fa \
-/home/hputnam/Mcap_Spawn/Data/Raw_Data/T7-6_S3_L001_R1_001.fastq.gz \
-/home/hputnam/Mcap_Spawn/Data/Raw_Data/T7-6_S3_L001_R2_001.fastq.gz \
--o /home/hputnam/Mcap_Spawn/Data/cleaned/T7-6_S3_L001_R1_001_cleaned.fastq \
--o /home/hputnam/Mcap_Spawn/Data/cleaned/T7-6_S3_L001_R2_001_cleaned.fastq &>T7-6.log```
-
-```/home/hputnam/programs/ea-utils.1.1.2-806/fastq-mcf -l 16 -q 20 -w 5 -x 10 -u -P 33 \
-/home/hputnam/Mcap_Spawn/Refs/barcodes.fa \
-/home/hputnam/Mcap_Spawn/Data/Raw_Data/T7-8_S3_L001_R1_001.fastq.gz \
-/home/hputnam/Mcap_Spawn/Data/Raw_Data/T7-8_S3_L001_R2_001.fastq.gz \
--o /home/hputnam/Mcap_Spawn/Data/cleaned/T7-8_S3_L001_R1_001_cleaned.fastq \
--o /home/hputnam/Mcap_Spawn/Data/cleaned/T7-8_S3_L001_R2_001_cleaned.fastq &>T7-8.log```
-
+/home/hputnam/Mcap_Spawn/Data/${file}_L001_R1_001.fastq.gz \
+/home/hputnam/Mcap_Spawn/Data/${file}_L001_R2_001.fastq.gz \
+-l 100 \
+-q 20 \
+-w 5 \
+-x 10 \
+-u \
+-P 33 \
+-o /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/${file}_L001_R1_001_cleaned.fastq.gz \
+-o /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/${file}_L001_R2_001_cleaned.fastq.gz &> /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/${file}.log
+done'```
 
 # Count Cleaned Reads
-```grep -c "@M" /home/hputnam/Mcap_Spawn/Data/cleaned/*.fastq```
-
-* /home/hputnam/Mcap_Spawn/Data/cleaned/T4-1_S1_L001_R1_001_cleaned.fastq:3434704
-* /home/hputnam/Mcap_Spawn/Data/cleaned/T4-1_S1_L001_R2_001_cleaned.fastq:3434704
-* /home/hputnam/Mcap_Spawn/Data/cleaned/T4-6_S1_L001_R1_001_cleaned.fastq:4065700
-* /home/hputnam/Mcap_Spawn/Data/cleaned/T4-6_S1_L001_R2_001_cleaned.fastq:4065700
-* /home/hputnam/Mcap_Spawn/Data/cleaned/T4-8_S1_L001_R1_001_cleaned.fastq:5053922
-* /home/hputnam/Mcap_Spawn/Data/cleaned/T4-8_S1_L001_R2_001_cleaned.fastq:5053922
-* /home/hputnam/Mcap_Spawn/Data/cleaned/T5-1_S2_L001_R1_001_cleaned.fastq:3274961
-* /home/hputnam/Mcap_Spawn/Data/cleaned/T5-1_S2_L001_R2_001_cleaned.fastq:3274961
-* /home/hputnam/Mcap_Spawn/Data/cleaned/T5-6_S2_L001_R1_001_cleaned.fastq:4504000
-* /home/hputnam/Mcap_Spawn/Data/cleaned/T5-6_S2_L001_R2_001_cleaned.fastq:4504000
-* /home/hputnam/Mcap_Spawn/Data/cleaned/T5-8_S2_L001_R1_001_cleaned.fastq:5251537
-* /home/hputnam/Mcap_Spawn/Data/cleaned/T5-8_S2_L001_R2_001_cleaned.fastq:5251537
-* /home/hputnam/Mcap_Spawn/Data/cleaned/T7-1_S3_L001_R1_001_cleaned.fastq:3475482
-* /home/hputnam/Mcap_Spawn/Data/cleaned/T7-1_S3_L001_R2_001_cleaned.fastq:3475482
-* /home/hputnam/Mcap_Spawn/Data/cleaned/T7-6_S3_L001_R1_001_cleaned.fastq:4174182
-* /home/hputnam/Mcap_Spawn/Data/cleaned/T7-6_S3_L001_R2_001_cleaned.fastq:4174182
-* /home/hputnam/Mcap_Spawn/Data/cleaned/T7-8_S3_L001_R1_001_cleaned.fastq:4051635
-* /home/hputnam/Mcap_Spawn/Data/cleaned/T7-8_S3_L001_R2_001_cleaned.fastq:4051635
+```grep -c "@M" /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/*.fastq```
 
 #Run Fastqc on cleaned files
-```mkdir /home/hputnam/Mcap_Spawn/Data/cleaned_QC_Files```
+```mkdir /home/hputnam/Mcap_Spawn/Data/Cleaned_QC_Files```
 
-```/home/hputnam/programs/FastQC/fastqc /home/hputnam/Mcap_Spawn/Data/cleaned/*.fastq -o /home/hputnam/Mcap_Spawn/Data/cleaned_QC_Files```
+```/home/hputnam/programs/FastQC/fastqc /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/*.fastq -o /home/hputnam/Mcap_Spawn/Data/Cleaned_QC_File```
 
 #Examine FASTQC Results of cleaned files
-```scp -r hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Data/cleaned_QC_Files /Users/hputnam/MyProjects/Montipora_Spawn_Timing/SEQ_Data/Cleaned_QC_Files```
+```scp -r hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Data/Cleaned_QC_File /Users/hputnam/MyProjects/Montipora_Spawn_Timing/Data```
 
 #Concatenate all R1 and all R2
-```cat /home/hputnam/Mcap_Spawn/Data/cleaned/*R1_001_cleaned.fastq  > all_R1_clean.fastq```
+```cat /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/*R1_001_cleaned.fastq.gz  > all_R1_clean.fastq```
 
-```cat /home/hputnam/Mcap_Spawn/Data/cleaned/*R2_001_cleaned.fastq  > all_R2_clean.fastq```
+```cat /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/*R2_001_cleaned.fastq.gz  > all_R1_clean.fastq```
 
 # Count Reads
-```grep -c "@M" /home/hputnam/Mcap_Spawn/Data/cleaned/*clean.fastq```
-
-* /home/hputnam/Mcap_Spawn/Data/cleaned/all_R1_clean.fastq:37286123
-* /home/hputnam/Mcap_Spawn/Data/cleaned/all_R2_clean.fastq:37286123
+```grep -c "@M" /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/*clean.fastq```
 
 
 #Run Trinity de novo assembly
-```/home/hputnam/programs/trinityrnaseq-2.2.0/Trinity --seqType fq  --left /home/hputnam/Mcap_Spawn/Data/cleaned/all_R1_clean.fastq --right /home/hputnam/Mcap_Spawn/Data/cleaned/all_R2_clean.fastq --CPU 40 --max_memory 20G  --min_contig_length 200``` 
+```~/programs/trinityrnaseq-Trinity-v2.4.0/Trinity --seqType fq  --left /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/all_R1_clean.fastq --right /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/all_R2_clean.fastq --CPU 30 --max_memory 20G  --min_contig_length 200``` 
 
 # Check Trinity Assembly Stats
 ```/usr/local/opt/trinityrnaseq/util/TrinityStats.pl /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.fasta > /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.Summary.txt```
@@ -249,29 +277,10 @@ Need to write a loop to do this
 ```bowtie2 -p20 --local --no-unal -x /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.fasta -q -1 /home/hputnam/Mcap_Spawn/Data/cleaned/all_R1_clean.fastq -2 /home/hputnam/Mcap_Spawn/Data/cleaned/all_R2_clean.fastq | samtools view -Sb - | samtools sort -no - - > bowtie2.nameSorted.bam```
 
 
-# Estimating Transcript Abundance with RSEM in Trinity
- 
+# Estimating Transcript Abundance 
+need to add a loop 
 ## Time T4
 ```/usr/local/opt/trinityrnaseq/util/align_and_estimate_abundance.pl --transcripts /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.fasta --seqType fq --prep_reference --left /home/hputnam/Mcap_Spawn/Data/cleaned/T4-1_S1_L001_R1_001_cleaned.fastq --right /home/hputnam/Mcap_Spawn/Data/cleaned/T4-1_S1_L001_R2_001_cleaned.fastq  --est_method RSEM --aln_method bowtie --trinity_mode --output_prefix T4-1```
-
-```/usr/local/opt/trinityrnaseq/util/align_and_estimate_abundance.pl --transcripts /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.fasta --seqType fq --prep_reference --left /home/hputnam/Mcap_Spawn/Data/cleaned/T4-6_S1_L001_R1_001_cleaned.fastq --right /home/hputnam/Mcap_Spawn/Data/cleaned/T4-6_S1_L001_R2_001_cleaned.fastq  --est_method RSEM --aln_method bowtie --trinity_mode --output_prefix T4-6```
-
-```/usr/local/opt/trinityrnaseq/util/align_and_estimate_abundance.pl --transcripts /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.fasta --seqType fq --prep_reference --left /home/hputnam/Mcap_Spawn/Data/cleaned/T4-8_S1_L001_R1_001_cleaned.fastq --right /home/hputnam/Mcap_Spawn/Data/cleaned/T4-8_S1_L001_R2_001_cleaned.fastq  --est_method RSEM --aln_method bowtie --trinity_mode --output_prefix T4-8```
-
-
-## Time T5
-```/usr/local/opt/trinityrnaseq/util/align_and_estimate_abundance.pl --transcripts /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.fasta --seqType fq --prep_reference --left /home/hputnam/Mcap_Spawn/Data/cleaned/T5-1_S2_L001_R1_001_cleaned.fastq --right /home/hputnam/Mcap_Spawn/Data/cleaned/T5-1_S2_L001_R2_001_cleaned.fastq  --est_method RSEM --aln_method bowtie --trinity_mode --output_prefix T5-1```
-
-```/usr/local/opt/trinityrnaseq/util/align_and_estimate_abundance.pl --transcripts /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.fasta --seqType fq --prep_reference --left /home/hputnam/Mcap_Spawn/Data/cleaned/T5-6_S2_L001_R1_001_cleaned.fastq --right /home/hputnam/Mcap_Spawn/Data/cleaned/T5-6_S2_L001_R2_001_cleaned.fastq  --est_method RSEM --aln_method bowtie --trinity_mode --output_prefix T5-6```
-
-```/usr/local/opt/trinityrnaseq/util/align_and_estimate_abundance.pl --transcripts /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.fasta --seqType fq --prep_reference --left /home/hputnam/Mcap_Spawn/Data/cleaned/T5-8_S2_L001_R1_001_cleaned.fastq --right /home/hputnam/Mcap_Spawn/Data/cleaned/T5-8_S2_L001_R2_001_cleaned.fastq  --est_method RSEM --aln_method bowtie --trinity_mode --output_prefix T5-8```
-
-## Time T7
-```/usr/local/opt/trinityrnaseq/util/align_and_estimate_abundance.pl --transcripts /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.fasta --seqType fq --prep_reference --left /home/hputnam/Mcap_Spawn/Data/cleaned/T7-1_S3_L001_R1_001_cleaned.fastq --right /home/hputnam/Mcap_Spawn/Data/cleaned/T7-1_S3_L001_R2_001_cleaned.fastq  --est_method RSEM --aln_method bowtie --trinity_mode --output_prefix T7-1```
-
-```/usr/local/opt/trinityrnaseq/util/align_and_estimate_abundance.pl --transcripts /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.fasta --seqType fq --prep_reference --left /home/hputnam/Mcap_Spawn/Data/cleaned/T7-6_S3_L001_R1_001_cleaned.fastq --right /home/hputnam/Mcap_Spawn/Data/cleaned/T7-6_S3_L001_R2_001_cleaned.fastq  --est_method RSEM --aln_method bowtie --trinity_mode --output_prefix T7-6```
-
-```/usr/local/opt/trinityrnaseq/util/align_and_estimate_abundance.pl --transcripts /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.fasta --seqType fq --prep_reference --left /home/hputnam/Mcap_Spawn/Data/cleaned/T7-8_S3_L001_R1_001_cleaned.fastq --right /home/hputnam/Mcap_Spawn/Data/cleaned/T7-8_S3_L001_R2_001_cleaned.fastq  --est_method RSEM --aln_method bowtie --trinity_mode --output_prefix T7-8```
 
 
 # Build Transcript and Gene Expression Matrices
