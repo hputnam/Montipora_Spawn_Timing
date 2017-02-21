@@ -13,42 +13,42 @@ This project examines gene expression during the normal spawning timing of coral
 
 **Sample.ID** | **Date** | **Time** | **Spawn** | **Read.ID** | **File.ID** | **Read.Count**  
  ------ | ------ | ------ | ------ | ------ | ------ | ------ 
-T4-1 | 6/6/16 | 18:00 | NO | Read1 | T4-1_S1_L001_R1_001.fastq.gz |
-T4-1 | 6/6/16 | 18:00 | NO | Read2 | T4-1_S1_L001_R2_001.fastq.gz |
-T4-6 | 6/6/16 | 18:00 | NO | Read1 | T4-6_S1_L001_R1_001.fastq.gz |
-T4-6 | 6/6/16 | 18:00 | NO | Read2 | T4-6_S1_L001_R2_001.fastq.gz |
-T4-8 | 6/6/16 | 18:00 | YES | Read1 | T4-8_S1_L001_R1_001.fastq.gz |
-T4-8 | 6/6/16 | 18:00 | YES | Read2 | T4-8_S1_L001_R2_001.fastq.gz |
-T4-10 | 6/6/16 | 18:00 | YES | Read1 | T4-10_S1_L001_R1_001.fastq.gz |
-T4-10 | 6/6/16 | 18:00 | YES | Read2 | T4-10_S1_L001_R2_001.fastq.gz |
-T4-16 | 6/6/16 | 18:00 | YES | Read1 | T4-16_S1_L001_R1_001.fastq.gz |
-T4-16 | 6/6/16 | 18:00 | YES | Read2 | T4-16_S1_L001_R2_001.fastq.gz |
-T4-17 | 6/6/16 | 18:00 | NO | Read1 | T4-17_S1_L001_R1_001.fastq.gz |
-T4-17 | 6/6/16 | 18:00 | NO | Read2 | T4-17_S1_L001_R2_001.fastq.gz |
-T5-1 | 6/6/16 | 20:00 | NO | Read1 | T5-1_S2_L001_R1_001.fastq.gz |
-T5-1 | 6/6/16 | 20:00 | NO | Read2 | T5-1_S2_L001_R2_001.fastq.gz |
-T5-6 | 6/6/16 | 20:00 | NO | Read1 | T5-6_S2_L001_R1_001.fastq.gz |
-T5-6 | 6/6/16 | 20:00 | NO | Read2 | T5-6_S2_L001_R2_001.fastq.gz |
-T5-8 | 6/6/16 | 20:00 | YES | Read1 | T5-8_S2_L001_R1_001.fastq.gz |
-T5-8 | 6/6/16 | 20:00 | YES | Read2 | T5-8_S2_L001_R2_001.fastq.gz |
-T5-10 | 6/6/16 | 20:00 | YES | Read1 | T5-10_S2_L001_R1_001.fastq.gz |
-T5-10 | 6/6/16 | 20:00 | YES | Read2 | T5-10_S2_L001_R2_001.fastq.gz |
-T5-16 | 6/6/16 | 20:00 | YES | Read1 | T5-16_S2_L001_R1_001.fastq.gz |
-T5-16 | 6/6/16 | 20:00 | YES | Read2 | T5-16_S2_L001_R2_001.fastq.gz |
-T5-17 | 6/6/16 | 20:00 | NO | Read1 | T5-17_S2_L001_R1_001.fastq.gz |
-T5-17 | 6/6/16 | 20:00 | NO | Read2 | T5-17_S2_L001_R2_001.fastq.gz |
-T7-1 | 6/7/16 | 00:00 | NO | Read1 | T7-1_S3_L001_R1_001.fastq.gz |
-T7-1 | 6/7/16 | 00:00 | NO | Read2 | T7-1_S3_L001_R2_001.fastq.gz |
-T7-6 | 6/7/16 | 00:00 | NO | Read1 | T7-6_S3_L001_R1_001.fastq.gz |
-T7-6 | 6/7/16 | 00:00 | NO | Read2 | T7-6_S3_L001_R2_001.fastq.gz |
-T7-8 | 6/7/16 | 00:00 | YES | Read1 | T7-8_S3_L001_R1_001.fastq.gz |
-T7-8 | 6/7/16 | 00:00 | YES | Read2 | T7-8_S3_L001_R2_001.fastq.gz |
-T7-10 | 6/7/16 | 00:00 | YES | Read1 | T7-10_S3_L001_R1_001.fastq.gz |
-T7-10 | 6/7/16 | 00:00 | YES | Read2 | T7-10_S3_L001_R2_001.fastq.gz |
-T7-16 | 6/7/16 | 00:00 | YES | Read1 | T7-16_S3_L001_R1_001.fastq.gz |
-T7-16 | 6/7/16 | 00:00 | YES | Read2 | T7-16_S3_L001_R2_001.fastq.gz |
-T7-17 | 6/7/16 | 00:00 | NO | Read1 | T7-17_S3_L001_R1_001.fastq.gz |
-T7-17 | 6/7/16 | 00:00 | NO | Read2 | T7-17_S3_L001_R2_001.fastq.gz |
+T4-1 | 6/6/16 | 18:00 | NO | Read1 | T4-1_S1_L001_R1_001.fastq.gz | 3438991
+T4-1 | 6/6/16 | 18:00 | NO | Read2 | T4-1_S1_L001_R2_001.fastq.gz | 3438991
+T4-6 | 6/6/16 | 18:00 | NO | Read1 | T4-6_S1_L001_R1_001.fastq.gz | 4070019
+T4-6 | 6/6/16 | 18:00 | NO | Read2 | T4-6_S1_L001_R2_001.fastq.gz | 4070019
+T4-8 | 6/6/16 | 18:00 | YES | Read1 | T4-8_S1_L001_R1_001.fastq.gz | 5059437
+T4-8 | 6/6/16 | 18:00 | YES | Read2 | T4-8_S1_L001_R2_001.fastq.gz | 5059437
+T4-10 | 6/6/16 | 18:00 | YES | Read1 | T4-10_S1_L001_R1_001.fastq.gz | 4192400
+T4-10 | 6/6/16 | 18:00 | YES | Read2 | T4-10_S1_L001_R2_001.fastq.gz | 4192400
+T4-16 | 6/6/16 | 18:00 | YES | Read1 | T4-16_S1_L001_R1_001.fastq.gz | 5728309
+T4-16 | 6/6/16 | 18:00 | YES | Read2 | T4-16_S1_L001_R2_001.fastq.gz | 5728309
+T4-17 | 6/6/16 | 18:00 | NO | Read1 | T4-17_S1_L001_R1_001.fastq.gz | 5685333
+T4-17 | 6/6/16 | 18:00 | NO | Read2 | T4-17_S1_L001_R2_001.fastq.gz | 5685333
+T5-1 | 6/6/16 | 20:00 | NO | Read1 | T5-1_S2_L001_R1_001.fastq.gz | 3278023
+T5-1 | 6/6/16 | 20:00 | NO | Read2 | T5-1_S2_L001_R2_001.fastq.gz | 3278023
+T5-6 | 6/6/16 | 20:00 | NO | Read1 | T5-6_S2_L001_R1_001.fastq.gz | 4508425
+T5-6 | 6/6/16 | 20:00 | NO | Read2 | T5-6_S2_L001_R2_001.fastq.gz | 4508425
+T5-8 | 6/6/16 | 20:00 | YES | Read1 | T5-8_S2_L001_R1_001.fastq.gz | 5257196
+T5-8 | 6/6/16 | 20:00 | YES | Read2 | T5-8_S2_L001_R2_001.fastq.gz | 5257196
+T5-10 | 6/6/16 | 20:00 | YES | Read1 | T5-10_S2_L001_R1_001.fastq.gz | 5182807
+T5-10 | 6/6/16 | 20:00 | YES | Read2 | T5-10_S2_L001_R2_001.fastq.gz | 5182807
+T5-16 | 6/6/16 | 20:00 | YES | Read1 | T5-16_S2_L001_R1_001.fastq.gz | 5054983
+T5-16 | 6/6/16 | 20:00 | YES | Read2 | T5-16_S2_L001_R2_001.fastq.gz | 5054983
+T5-17 | 6/6/16 | 20:00 | NO | Read1 | T5-17_S2_L001_R1_001.fastq.gz | 4777150
+T5-17 | 6/6/16 | 20:00 | NO | Read2 | T5-17_S2_L001_R2_001.fastq.gz | 4777150
+T7-1 | 6/7/16 | 00:00 | NO | Read1 | T7-1_S3_L001_R1_001.fastq.gz | 3480865
+T7-1 | 6/7/16 | 00:00 | NO | Read2 | T7-1_S3_L001_R2_001.fastq.gz | 3480865
+T7-6 | 6/7/16 | 00:00 | NO | Read1 | T7-6_S3_L001_R1_001.fastq.gz | 4179337
+T7-6 | 6/7/16 | 00:00 | NO | Read2 | T7-6_S3_L001_R2_001.fastq.gz | 4179337
+T7-8 | 6/7/16 | 00:00 | YES | Read1 | T7-8_S3_L001_R1_001.fastq.gz | 4055930
+T7-8 | 6/7/16 | 00:00 | YES | Read2 | T7-8_S3_L001_R2_001.fastq.gz | 4055930
+T7-10 | 6/7/16 | 00:00 | YES | Read1 | T7-10_S3_L001_R1_001.fastq.gz | 3767511
+T7-10 | 6/7/16 | 00:00 | YES | Read2 | T7-10_S3_L001_R2_001.fastq.gz | 3767511
+T7-16 | 6/7/16 | 00:00 | YES | Read1 | T7-16_S3_L001_R1_001.fastq.gz | 4661903
+T7-16 | 6/7/16 | 00:00 | YES | Read2 | T7-16_S3_L001_R2_001.fastq.gz | 4661903
+T7-17 | 6/7/16 | 00:00 | NO | Read1 | T7-17_S3_L001_R1_001.fastq.gz | 4349113
+T7-17 | 6/7/16 | 00:00 | NO | Read2 | T7-17_S3_L001_R2_001.fastq.gz | 4349113
 
 
 
