@@ -2,6 +2,12 @@
 Data uploaded and analyzed on Poire 
 ssh hputnam@galaxy.geodata.hawaii.edu
 
+### Program List and Versions
+fastqc
+fastq-mcf
+multiqc
+
+
 ### Upload data to server
 ```scp -r /Volumes/NGS_DATA/Hawaii_Mcap/Spawn_2016 hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Data```
 
@@ -216,7 +222,7 @@ https://github.com/ExpressionAnalysis/ea-utils
 -P = Phred-scale default = auto
 
 ### FastqMcf 
-mkdir /home/hputnam/Mcap_Spawn/Data/Cleaned_Data
+```mkdir /home/hputnam/Mcap_Spawn/Data/Cleaned_Data```
 
 ```nohup sh -c 'for file in "T4-10-includes-adapter_S1" "T4-16-includes-adapter_S1" "T4-17-includes-adapter_S1" "T4-1-includes-adapter_S1" "T4-6-includes-adapter_S1" "T4-8-includes-adapter_S1" "T5-10-includes-adapter_S2" "T5-16-includes-adapter_S2" "T5-17-includes-adapter_S2" "T5-1-includes-adapter_S2" "T5-6-includes-adapter_S2" "T5-8-includes-adapter_S2"  "T7-10-includes-adapter_S3" "T7-16-includes-adapter_S3" "T7-17-includes-adapter_S3" "T7-1-includes-adapter_S3" "T7-6-includes-adapter_S3" "T7-8-includes-adapter_S3" 
 do
@@ -235,61 +241,126 @@ do
 done'```
 
 # Count Cleaned Reads
-```grep -c "@M" /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/*.fastq```
+```zgrep -c "@M" /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/*.fastq.gz```
+T4-10-includes-adapter_S1_L001_R1_001_cleaned.fastq.gz:4160546
+T4-10-includes-adapter_S1_L001_R2_001_cleaned.fastq.gz:4160546
+T4-16-includes-adapter_S1_L001_R1_001_cleaned.fastq.gz:5678719
+T4-16-includes-adapter_S1_L001_R2_001_cleaned.fastq.gz:5678719
+T4-17-includes-adapter_S1_L001_R1_001_cleaned.fastq.gz:5645303
+T4-17-includes-adapter_S1_L001_R2_001_cleaned.fastq.gz:5645303
+T4-1-includes-adapter_S1_L001_R1_001_cleaned.fastq.gz:3411248
+T4-1-includes-adapter_S1_L001_R2_001_cleaned.fastq.gz:3411248
+T4-6-includes-adapter_S1_L001_R1_001_cleaned.fastq.gz:4034708
+T4-6-includes-adapter_S1_L001_R2_001_cleaned.fastq.gz:4034708
+T4-8-includes-adapter_S1_L001_R1_001_cleaned.fastq.gz:5020101
+T4-8-includes-adapter_S1_L001_R2_001_cleaned.fastq.gz:5020101
+T5-10-includes-adapter_S2_L001_R1_001_cleaned.fastq.gz:5146286
+T5-10-includes-adapter_S2_L001_R2_001_cleaned.fastq.gz:5146286
+T5-16-includes-adapter_S2_L001_R1_001_cleaned.fastq.gz:5016739
+T5-16-includes-adapter_S2_L001_R2_001_cleaned.fastq.gz:5016739
+T5-17-includes-adapter_S2_L001_R1_001_cleaned.fastq.gz:4736384
+T5-17-includes-adapter_S2_L001_R2_001_cleaned.fastq.gz:4736384
+T5-1-includes-adapter_S2_L001_R1_001_cleaned.fastq.gz:3255222
+T5-1-includes-adapter_S2_L001_R2_001_cleaned.fastq.gz:3255222
+T5-6-includes-adapter_S2_L001_R1_001_cleaned.fastq.gz:4471057
+T5-6-includes-adapter_S2_L001_R2_001_cleaned.fastq.gz:4471057
+T5-8-includes-adapter_S2_L001_R1_001_cleaned.fastq.gz:5214323
+T5-8-includes-adapter_S2_L001_R2_001_cleaned.fastq.gz:5214323
+T7-10-includes-adapter_S3_L001_R1_001_cleaned.fastq.gz:3740434
+T7-10-includes-adapter_S3_L001_R2_001_cleaned.fastq.gz:3740434
+T7-16-includes-adapter_S3_L001_R1_001_cleaned.fastq.gz:4629895
+T7-16-includes-adapter_S3_L001_R2_001_cleaned.fastq.gz:4629895
+T7-17-includes-adapter_S3_L001_R1_001_cleaned.fastq.gz:4315370
+T7-17-includes-adapter_S3_L001_R2_001_cleaned.fastq.gz:4315370
+T7-1-includes-adapter_S3_L001_R1_001_cleaned.fastq.gz:3453703
+T7-1-includes-adapter_S3_L001_R2_001_cleaned.fastq.gz:3453703
+T7-6-includes-adapter_S3_L001_R1_001_cleaned.fastq.gz:4151588
+T7-6-includes-adapter_S3_L001_R2_001_cleaned.fastq.gz:4151588
+T7-8-includes-adapter_S3_L001_R1_001_cleaned.fastq.gz:4027982
+T7-8-includes-adapter_S3_L001_R2_001_cleaned.fastq.gz:4027982
+
+All reads paired end = 160,291,216
+Half = 80,109,608
 
 #Run Fastqc on cleaned files
 ```mkdir /home/hputnam/Mcap_Spawn/Data/Cleaned_QC_Files```
 
-```/home/hputnam/programs/FastQC/fastqc /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/*.fastq -o /home/hputnam/Mcap_Spawn/Data/Cleaned_QC_File```
+```/home/hputnam/programs/FastQC/fastqc /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/*.fastq.gz -o /home/hputnam/Mcap_Spawn/Data/Cleaned_QC_Files```
 
 #Examine FASTQC Results of cleaned files
-```scp -r hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Data/Cleaned_QC_File /Users/hputnam/MyProjects/Montipora_Spawn_Timing/Data```
+```scp -r hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Data/Cleaned_QC_Files /Users/hputnam/MyProjects/Montipora_Spawn_Timing/Data```
+
+```multiqc .```
 
 #Concatenate all R1 and all R2
-```cat /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/*R1_001_cleaned.fastq.gz  > all_R1_clean.fastq```
+```cat /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/*R1_001_cleaned.fastq.gz  > all_R1_clean.fastq.gz```
 
-```cat /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/*R2_001_cleaned.fastq.gz  > all_R1_clean.fastq```
+```cat /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/*R2_001_cleaned.fastq.gz  > all_R2_clean.fastq.gz```
 
 # Count Reads
-```grep -c "@M" /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/*clean.fastq```
+```zgrep -c "@M" /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/*clean.fastq```
 
+read count = 80,109,608
 
 #Run Trinity de novo assembly
-```~/programs/trinityrnaseq-Trinity-v2.4.0/Trinity --seqType fq  --left /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/all_R1_clean.fastq --right /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/all_R2_clean.fastq --CPU 30 --max_memory 20G  --min_contig_length 200``` 
+* with in silico normalization
+```mkdir /home/hputnam/Mcap_Spawn/Assembly```
+
+```nohup /home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/Trinity --seqType fq  --left /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/all_R1_clean.fastq.gz --right /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/all_R2_clean.fastq.gz --CPU 40 --max_memory 400G  --min_contig_length 200``` 
+
+* without in silico normalization
+```mkdir /home/hputnam/Mcap_Spawn/Assembly/Assembly_no_norm```
+
+```nohup /home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/Trinity --seqType fq  --left /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/all_R1_clean.fastq.gz --right /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/all_R2_clean.fastq.gz --CPU 30 --max_memory 20G  --min_contig_length 200 --no_normalize_reads``` 
 
 # Check Trinity Assembly Stats
-```/usr/local/opt/trinityrnaseq/util/TrinityStats.pl /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.fasta > /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.Summary.txt```
+```/home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/util/TrinityStats.pl /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta > /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.Summary.txt```
 
 #Run BSUSCO on Trinity.fasta 
 * http://busco.ezlab.org/files/BUSCO_userguide.pdf
 
 ## Assessing assembly and annotation completeness with Benchmarking Universal Single-Copy Orthologs
+```mkdir BUSCO/alv```
 
-```python /home/hputnam/programs/BUSCO_v1.22/BUSCO_v1.22.py -o Mcap_Spawn_BUSCO -in /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.fasta -l /home/hputnam/programs/BUSCO_v1.22/eukaryota -m trans```
+```python /home/hputnam/programs/BUSCO_v1.22/BUSCO_v1.22.py -o Mcap_Spawn_BUSCO -in /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta -l /home/hputnam/Mcap_Spawn/Refs/alveolata_stramenophiles_ensembl -m trans```
 
-# Summarizing Trinity Assembly Stats
-```/usr/local/opt/trinityrnaseq/util/TrinityStats.pl /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.fasta > Trinity.Sumary.txt```
+```mkdir BUSCO/euk```
 
-# Assessing the Read Content of the Transcriptome Assembly
+```python /home/hputnam/programs/BUSCO_v1.22/BUSCO_v1.22.py -o Mcap_Spawn_BUSCO -in /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta -l /home/hputnam/Mcap_Spawn/Refs/eukaryota_odb9 -m trans```
 
-```bowtie2-build /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.fasta /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.fasta```
+```mkdir BUSCO/meta```
 
-```bowtie2 -p20 --local --no-unal -x /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.fasta -q -1 /home/hputnam/Mcap_Spawn/Data/cleaned/all_R1_clean.fastq -2 /home/hputnam/Mcap_Spawn/Data/cleaned/all_R2_clean.fastq | samtools view -Sb - | samtools sort -no - - > bowtie2.nameSorted.bam```
-
+```python /home/hputnam/programs/BUSCO_v1.22/BUSCO_v1.22.py -o Mcap_Spawn_BUSCO -in /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta -l /home/hputnam/Mcap_Spawn/Refs/metazoa_odb9 -m trans```
 
 # Estimating Transcript Abundance 
-need to add a loop 
-## Time T4
-```/usr/local/opt/trinityrnaseq/util/align_and_estimate_abundance.pl --transcripts /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.fasta --seqType fq --prep_reference --left /home/hputnam/Mcap_Spawn/Data/cleaned/T4-1_S1_L001_R1_001_cleaned.fastq --right /home/hputnam/Mcap_Spawn/Data/cleaned/T4-1_S1_L001_R2_001_cleaned.fastq  --est_method RSEM --aln_method bowtie --trinity_mode --output_prefix T4-1```
+```mkdir /home/hputnam/Mcap_Spawn/RSEM```
+
+```nohup sh -c 'for file in "T4-10-includes-adapter_S1" "T4-16-includes-adapter_S1" "T4-17-includes-adapter_S1" "T4-1-includes-adapter_S1" "T4-6-includes-adapter_S1" "T4-8-includes-adapter_S1" "T5-10-includes-adapter_S2" "T5-16-includes-adapter_S2" "T5-17-includes-adapter_S2" "T5-1-includes-adapter_S2" "T5-6-includes-adapter_S2" "T5-8-includes-adapter_S2"  "T7-10-includes-adapter_S3" "T7-16-includes-adapter_S3" "T7-17-includes-adapter_S3" "T7-1-includes-adapter_S3" "T7-6-includes-adapter_S3" "T7-8-includes-adapter_S3" 
+do
+/home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/util/align_and_estimate_abundance.pl \
+--transcripts /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta \
+--seqType fq \
+--prep_reference \
+--left /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/${file}_L001_R1_001_cleaned.fastq.gz \
+--right /home/hputnam/Mcap_Spawn/Data/Cleaned_Data/${file}_L001_R2_001_cleaned.fastq.gz  \
+--est_method RSEM \
+--aln_method bowtie2 \
+--trinity_mode \
+--output_dir /home/hputnam/Mcap_Spawn/RSEM \
+--output_prefix ${file}
+done'```
 
 
 # Build Transcript and Gene Expression Matrices
 
-/usr/local/opt/trinityrnaseq/util/abundance_estimates_to_matrix.pl --est_method RSEM --out_prefix isoforms_counts_matrix T4-1.isoforms.results T4-6.isoforms.results T4-8.isoforms.results T5-1.isoforms.results T5-6.isoforms.results T5-8.isoforms.results T7-1.isoforms.results T7-6.isoforms.results T7-8.isoforms.results
+```/home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/util/abundance_estimates_to_matrix.pl --est_method RSEM --out_prefix isoforms_counts_matrix *.isoforms.results```
+
+
+* See R script for statistical analysis with DESeq2
 
 # Run Differential Expression Analysis
 
-/usr/local/opt/trinityrnaseq/Analysis/DifferentialExpression/run_DE_analysis.pl --matrix /home/hputnam/Mcap_Spawn/RSEM/isoforms_counts_matrix.counts.matrix --method edgeR --samples_file /home/hputnam/Mcap_Spawn/Refs/sample_description.txt 
+/usr/local/opt/trinityrnaseq/Analysis/DifferentialExpression/run_DE_analysis.pl --matrix /home/hputnam/Mcap_Spawn/RSEM/isoforms_counts_matrix.counts.matrix --method DESeq2 --samples_file /home/hputnam/Mcap_Spawn/Refs/sample_description.txt 
 
 # Cluster DEG_fpkm
 /usr/local/opt/trinityrnaseq/Analysis/DifferentialExpression/analyze_diff_expr.pl --matrix /home/hputnam/Mcap_Spawn/RSEM/isoforms_counts_matrix.TMM.fpkm.matrix -P 0.05 -C 0 --samples /home/hputnam/Mcap_Spawn/Refs/sample_description.txt 
@@ -298,4 +369,23 @@ need to add a loop
 # Cluster Expression Profiles
 /usr/local/opt/trinityrnaseq/Analysis/DifferentialExpression//define_clusters_by_cutting_tree.pl \
 -R  diffExpr.P0.05_C0.matrix.RData --Ptree 60
+
+
+# Annotation with Trinotate
+* build databases
+
+```/home/hputnam/programs/Trinotate-3.0.1/admin/Build_Trinotate_Boilerplate_SQLite_db.pl  Trinotate```
+
+
+```/home/hputnam/programs/ncbi-blast-2.6.0+/bin/makeblastdb -in uniprot_sprot.pep -dbtype prot```
+
+
+### Blastx 
+```nohup /home/hputnam/programs/ncbi-blast-2.6.0+/bin/blastx -query /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta -db /home/hputnam/programs/Trinotate-3.0.1/uniprot_sprot.pep -num_threads 30 -max_target_seqs 1 -outfmt 6 > blastx.outfmt6```
+
+
+### Transdecoder
+```nohup /home/hputnam/programs/TransDecoder-3.0.1/TransDecoder.LongOrfs -t /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta```
+
+
 
