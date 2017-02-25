@@ -6,6 +6,14 @@ ssh hputnam@galaxy.geodata.hawaii.edu
 fastqc
 fastq-mcf
 multiqc
+hmmer-3.1
+signalp-4.1
+Trinotate-3.0.1
+tmhmm-2.0
+hmmer-3.1
+ncbi-blast-2.6.0+
+TransDecoder-3.0.1
+DESeq2
 
 
 ### Upload data to server
@@ -356,19 +364,16 @@ done'```
 ```/home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/util/abundance_estimates_to_matrix.pl --est_method RSEM --out_prefix isoforms_counts_matrix *.isoforms.results```
 
 
+# Assign seqeunces to host and sym
+* https://github.com/jueshengong/psytrans
+
+```/home/hputnam/programs/psytrans.py /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta -H /home/hputnam/Mcap_Spawn/Refs/Montipora_assembly.fa -S /home/hputnam/Mcap_Spawn/Refs/Pinzon_ESM1_Symbiodinium.fasta -o separated```
+
+
+
 * See R script for statistical analysis with DESeq2
 
-# Run Differential Expression Analysis
-
-/usr/local/opt/trinityrnaseq/Analysis/DifferentialExpression/run_DE_analysis.pl --matrix /home/hputnam/Mcap_Spawn/RSEM/isoforms_counts_matrix.counts.matrix --method DESeq2 --samples_file /home/hputnam/Mcap_Spawn/Refs/sample_description.txt 
-
-# Cluster DEG_fpkm
-/usr/local/opt/trinityrnaseq/Analysis/DifferentialExpression/analyze_diff_expr.pl --matrix /home/hputnam/Mcap_Spawn/RSEM/isoforms_counts_matrix.TMM.fpkm.matrix -P 0.05 -C 0 --samples /home/hputnam/Mcap_Spawn/Refs/sample_description.txt 
-
-
-# Cluster Expression Profiles
-/usr/local/opt/trinityrnaseq/Analysis/DifferentialExpression//define_clusters_by_cutting_tree.pl \
--R  diffExpr.P0.05_C0.matrix.RData --Ptree 60
+scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/RSEM/isoforms_counts_matrix.counts.matrix /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data
 
 
 # Annotation with Trinotate
@@ -380,12 +385,30 @@ done'```
 ```/home/hputnam/programs/ncbi-blast-2.6.0+/bin/makeblastdb -in uniprot_sprot.pep -dbtype prot```
 
 
-### Blastx 
+### BLAST
+
+####BLASTx
 ```nohup /home/hputnam/programs/ncbi-blast-2.6.0+/bin/blastx -query /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta -db /home/hputnam/programs/Trinotate-3.0.1/uniprot_sprot.pep -num_threads 30 -max_target_seqs 1 -outfmt 6 > blastx.outfmt6```
 
-
-### Transdecoder
+####TransDecoder
 ```nohup /home/hputnam/programs/TransDecoder-3.0.1/TransDecoder.LongOrfs -t /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta```
 
+```nohup /home/hputnam/programs/TransDecoder-3.0.1/TransDecoder.Predict --cpu 30 -t /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta```
 
+####BLASTp
+```nohup /home/hputnam/programs/ncbi-blast-2.6.0+/bin/blastp -query /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep -db /home/hputnam/programs/Trinotate-3.0.1/uniprot_sprot.pep -num_threads 30 -max_target_seqs 1 -outfmt 6 > blastp.outfmt6```
+
+#### HMMER
+```nohup /home/hputnam/programs/hmmer-3.1b2-linux-intel-x86_64/binaries/hmmscan --cpu 30 --domtblout TrinotatePFAM.out /home/hputnam/programs/Trinotate-3.0.1/Pfam-A.hmm /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep > pfam.log```
+
+#### signalP
+
+/home/hputnam/programs/signalp-4.1/signalp -f short -n signalp.out /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep
+
+#### tmHMM
+```nohup /home/hputnam/programs/tmhmm-2.0c/bin/tmhmm --short < /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep > tmhmm.out```
+
+#### RNAMMER
+
+```nohup /home/hputnam/programs/Trinotate-3.0.1/util/rnammer_support/RnammerTranscriptome.pl --transcriptome /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta --path_to_rnammer /home/hputnam/programs/rnammer```
 
