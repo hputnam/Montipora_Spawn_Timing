@@ -103,7 +103,7 @@ DESeq2
 * 820397dbcc084832ad34ba177cea411a  T7-8-includes-adapter_S3_L001_R1_001.fastq.gz
 * 5c8792e297e619d97a8f65cc1d2e6b24  T7-8-includes-adapter_S3_L001_R2_001.fastq.gz
 
-### Used the following adapter files to make barcodes file
+### Used the following adapter seqs to make a MiSeq barcodes file
 >TruSeq_universal_F
 AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT
 > Genomic_DNA_oligonucleotide_sequences_Adapters
@@ -367,43 +367,40 @@ done'```
 # Assign seqeunces to host and sym
 * https://github.com/jueshengong/psytrans
 
-```/home/hputnam/programs/psytrans.py /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta -H /home/hputnam/Mcap_Spawn/Refs/Montipora_assembly.fa -S /home/hputnam/Mcap_Spawn/Refs/Pinzon_ESM1_Symbiodinium.fasta -o separated```
+```nohup /home/hputnam/programs/psytrans.py /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta -H /home/hputnam/Mcap_Spawn/Refs/Montipora_assembly.fa -S /home/hputnam/Mcap_Spawn/Refs/Pinzon_ESM1_Symbiodinium.fasta -o separated```
 
 
-
+# Statistical analysis and plotting with DESeq2
 * See R script for statistical analysis with DESeq2
 
-scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/RSEM/isoforms_counts_matrix.counts.matrix /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data
+```scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/RSEM/isoforms_counts_matrix.counts.matrix /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data```
 
 
 # Annotation with Trinotate
-* build databases
+
+####Build Databases
 
 ```/home/hputnam/programs/Trinotate-3.0.1/admin/Build_Trinotate_Boilerplate_SQLite_db.pl  Trinotate```
 
 
 ```/home/hputnam/programs/ncbi-blast-2.6.0+/bin/makeblastdb -in uniprot_sprot.pep -dbtype prot```
 
-
-### BLAST
-
 ####BLASTx
 ```nohup /home/hputnam/programs/ncbi-blast-2.6.0+/bin/blastx -query /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta -db /home/hputnam/programs/Trinotate-3.0.1/uniprot_sprot.pep -num_threads 30 -max_target_seqs 1 -outfmt 6 > blastx.outfmt6```
 
-####TransDecoder
+#### TransDecoder
 ```nohup /home/hputnam/programs/TransDecoder-3.0.1/TransDecoder.LongOrfs -t /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta```
 
 ```nohup /home/hputnam/programs/TransDecoder-3.0.1/TransDecoder.Predict --cpu 30 -t /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta```
 
-####BLASTp
+#### BLASTp
 ```nohup /home/hputnam/programs/ncbi-blast-2.6.0+/bin/blastp -query /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep -db /home/hputnam/programs/Trinotate-3.0.1/uniprot_sprot.pep -num_threads 30 -max_target_seqs 1 -outfmt 6 > blastp.outfmt6```
 
 #### HMMER
 ```nohup /home/hputnam/programs/hmmer-3.1b2-linux-intel-x86_64/binaries/hmmscan --cpu 30 --domtblout TrinotatePFAM.out /home/hputnam/programs/Trinotate-3.0.1/Pfam-A.hmm /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep > pfam.log```
 
 #### signalP
-
-/home/hputnam/programs/signalp-4.1/signalp -f short -n signalp.out /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep
+```nohup /home/hputnam/programs/signalp-4.1/signalp -f short -n signalp.out /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep```
 
 #### tmHMM
 ```nohup /home/hputnam/programs/tmhmm-2.0c/bin/tmhmm --short < /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep > tmhmm.out```
@@ -411,4 +408,48 @@ scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/RSEM/isoforms_cou
 #### RNAMMER
 
 ```nohup /home/hputnam/programs/Trinotate-3.0.1/util/rnammer_support/RnammerTranscriptome.pl --transcriptome /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta --path_to_rnammer /home/hputnam/programs/rnammer```
+
+# Build Trinotate SQLite Database
+
+```/home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/util/support_scripts/get_Trinity_gene_to_trans_map.pl /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta >  Trinity.fasta.gene_trans_map```
+
+#### Load transcripts and coding regions
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite init --gene_trans_map /home/hputnam/Mcap_Spawn/Annot/SQL_DB/Trinity.fasta.gene_trans_map --transcript_fasta /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta --transdecoder_pep /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep```
+
+#### Load BLAST homologies
+
+/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_swissprot_blastp /home/hputnam/Mcap_Spawn/Annot/pep/blastp.outfmt6
+
+/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_swissprot_blastx /home/hputnam/Mcap_Spawn/Annot/blastx.outfmt6
+
+#### Load PFAM 
+
+/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_pfam /home/hputnam/Mcap_Spawn/Annot/HMM/TrinotatePFAM.out
+
+
+#### Load transmembrane domains
+
+/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_tmhmm tmhmm.out
+
+#### Load signal peptide predictions
+
+/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_signalp signalp.out
+
+#### Output
+
+Trinotate: Output an Annotation Report
+
+/home/hputnam/programs/Trinotate-3.0.1/ Trinotate.sqlite report [opts] > trinotate_annotation_report.xls
+
+
+
+
+
+
+
+
+
+
+
+
 
