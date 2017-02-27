@@ -432,24 +432,22 @@ Need to look at blast hits for remaining 216033 transcripts... Is Pinzon et al a
 
 #### Load PFAM 
 
-/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_pfam /home/hputnam/Mcap_Spawn/Annot/HMM/TrinotatePFAM.out
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_pfam /home/hputnam/Mcap_Spawn/Annot/HMM/TrinotatePFAM.out```
 
 
 #### Load transmembrane domains
 
-/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_tmhmm /home/hputnam/Mcap_Spawn/Annot/tmHH/tmhmm.out
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_tmhmm /home/hputnam/Mcap_Spawn/Annot/tmHH/tmhmm.out```
 
 #### Load signal peptide predictions
 
-/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_signalp /home/hputnam/Mcap_Spawn/Annot/SP/signalp.out
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_signalp /home/hputnam/Mcap_Spawn/Annot/SP/signalp.out```
 
-#### Output
+#### Output Annotation Report
 
-Trinotate: Output an Annotation Report
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite report > trinotate_annotation_report.xls```
 
-/home/hputnam/programs/Trinotate-3.0.1/ Trinotate.sqlite report [opts] > trinotate_annotation_report.xls
-
-
+```scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Annot/SQL_DB/trinotate_annotation_report.xls /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data```
 
 
 

@@ -22,6 +22,10 @@ library("adegenet")
 setwd("/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data") #set working directory
 
 counts <- read.csv(file="isoforms_counts_matrix.counts.matrix", header=T, sep="") #Load expressin matrix from trinity
+annot <- read.csv(file="trinotate_annotation_report.csv", header=T)
+#annotation <- annotation[match(rownames(counts), annot$Pfam),]
+
+#want to pull up until the 3rd occurrance of ^ in Pfam column
 
 filt <- filterfun(pOverA(0.25,5)) #set filter values for PoverA, P percent of the samples have counts over A
 tfil <- genefilter(counts, filt) #create filter for the counts data
@@ -59,28 +63,31 @@ sig.list <- data[which(rownames(data) %in% rownames(sig)),] #subset list of sig 
 rsig <- rlog(sig.list, blind=FALSE) #apply a regularized log transformation to minimize effects of small counts and normalize wrt library size
 
 ##### Run PCA
-princomp(rsig$)
+#princomp(rsig$)
 
 ##### View DEG Data Heatmap and PCA
 PCA.plot <- plotPCA(rsig, intgroup = c("Time", "Spawn")) #Plot PCA of all samples for DEG only
 PCA.plot #view plot
 PC.info <-PCA.plot$data #extract plotting data
-plot(PC.info$PC1, PC.info$PC2, xlim=c(-50,50), ylim=c(-20, 20), xlab="PC1", ylab="PC2", pch = c(15, 16, 17)[as.numeric(sample.info$Time)], col=c("black", "gray")[sample.info$Spawn], cex=1.3)
+jpeg(file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/PCA.DEG.jpg")
+plot(PC.info$PC1, PC.info$PC2, xlim=c(-50,50), ylim=c(-20, 20), xlab="PC1 82%", ylab="PC2 5%", pch = c(15, 16, 17)[as.numeric(sample.info$Time)], col=c("black", "gray")[sample.info$Spawn], cex=1.3)
 legend(x="topleft", 
        bty="n",
        legend = c("00:00", "18:00", "20:00"),
        pch = c(15, 16, 17),
        col=c("black", "black", "black"),
        cex=1)
-
+dev.off()
 
 topVarGenes <- head(order(rowVars(assay(rsig)),decreasing=TRUE),sig.num) #can choose a subset of transcripts for viewing
 mat <- assay(rsig)[ topVarGenes, ] #make an expression object
 mat <- mat - rowMeans(mat) #difference in expression compared to average across all samples
 df <- as.data.frame(colData(rsig)[,c("Spawn","Time")]) #make dataframe
+jpeg(file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/Heatmap.DEG.jpg")
 pheatmap(mat, annotation_col=df, 
          show_rownames =F, 
          show_colnames =F) #plot heatmap of all DEG by group
+dev.off()
 
 # Time point contrasts
 DEG.18 <- results(DEG.int, contrast=c("group", "YES18:00", "NO18:00")) #contrasts between SP NSP at each time
@@ -122,8 +129,10 @@ L18.20.00$L00.Count[is.na(L18.20.00$L00.Count)] <- 0 #assign NA=0 count i.e., no
 vennData<-L18.20.00[,2:4] #set venn data to DE counts only
 a <- vennCounts(vennData) # compute classification counts
 colnames(a) <- c('18:00', '20:00', '00:00', "Counts") #set catagory names
+jpeg(file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/Venn.DEG.jpg")
 vennDiagram(a, main='DEG between groups') #draw venn diagram
 title(main='for each time point', cex.main=0.9) #add a title
+dev.off()
 
 #Look for match between all lists
 shared <- Reduce(intersect, list(rownames(sig.list.18),rownames(sig.list.20),rownames(sig.list.00))) #idenitfy shared DE transcripts between each time point 

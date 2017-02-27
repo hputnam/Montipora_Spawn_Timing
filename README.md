@@ -54,13 +54,13 @@ T7-17 | 6/7/16 | 00:00 | NO | Read2 | T7-17_S3_L001_R2_001.fastq.gz | 4349113
 
 6 lanes with 3 samples per lane for library prep and sequencing 2 x 150 on MiSeq at HIMB
 Samples submitted: 20160629
-Estimated Sequencing Completion November 2016
+Sequencing Completion December 2016
 
 * see [**Library_Prep_Info.csv**](https://github.com/hputnam/Montipora_Spawn_Timing/blob/master/Processing/Library_Prep_Info.csv)
 * see [**Sample.Info.csv**](https://github.com/hputnam/Montipora_Spawn_Timing/blob/master/Processing/Sample.Info.csv)
 
 ## Notes about Files
-NA
+Files submitted to NCBI under BioProject ID: PRJNA376841
 
 # Directory Structure
 
