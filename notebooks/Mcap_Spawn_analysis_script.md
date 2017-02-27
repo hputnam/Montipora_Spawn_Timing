@@ -369,6 +369,14 @@ done'```
 
 ```nohup /home/hputnam/programs/psytrans.py /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta -H /home/hputnam/Mcap_Spawn/Refs/Montipora_assembly.fa -S /home/hputnam/Mcap_Spawn/Refs/Pinzon_ESM1_Symbiodinium.fasta -o separated```
 
+grep -c ">" host_Trinity.fasta
+534131
+
+grep -c ">" symb_Trinity.fasta
+26332
+
+Need to look at blast hits for remaining 216033 transcripts... Is Pinzon et al a good match for Symbiodinium in Montipora. 
+
 
 # Statistical analysis and plotting with DESeq2
 * See R script for statistical analysis with DESeq2
@@ -418,9 +426,9 @@ done'```
 
 #### Load BLAST homologies
 
-/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_swissprot_blastp /home/hputnam/Mcap_Spawn/Annot/pep/blastp.outfmt6
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_swissprot_blastp /home/hputnam/Mcap_Spawn/Annot/pep/blastp.outfmt6```
 
-/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_swissprot_blastx /home/hputnam/Mcap_Spawn/Annot/blastx.outfmt6
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_swissprot_blastx /home/hputnam/Mcap_Spawn/Annot/blastx.outfmt6```
 
 #### Load PFAM 
 
@@ -429,11 +437,11 @@ done'```
 
 #### Load transmembrane domains
 
-/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_tmhmm tmhmm.out
+/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_tmhmm /home/hputnam/Mcap_Spawn/Annot/tmHH/tmhmm.out
 
 #### Load signal peptide predictions
 
-/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_signalp signalp.out
+/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_signalp /home/hputnam/Mcap_Spawn/Annot/SP/signalp.out
 
 #### Output
 
