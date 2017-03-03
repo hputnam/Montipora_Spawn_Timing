@@ -3,17 +3,17 @@ Data uploaded and analyzed on Poire
 ssh hputnam@galaxy.geodata.hawaii.edu
 
 ### Program List and Versions
-fastqc
-fastq-mcf
-multiqc
-hmmer-3.1
-signalp-4.1
-Trinotate-3.0.1
-tmhmm-2.0
-hmmer-3.1
-ncbi-blast-2.6.0+
-TransDecoder-3.0.1
-DESeq2
+* fastqc
+* fastq-mcf
+* multiqc
+* hmmer-3.1
+* signalp-4.1
+* Trinotate-3.0.1
+* tmhmm-2.0
+* hmmer-3.1
+* ncbi-blast-2.6.0+
+* TransDecoder-3.0.1
+* DESeq2
 
 
 ### Upload data to server
