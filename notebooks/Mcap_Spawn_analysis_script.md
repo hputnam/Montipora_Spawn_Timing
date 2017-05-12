@@ -1,6 +1,8 @@
 # Analysis for Montipora_Spawn_Timing
 Data uploaded and analyzed on Poire 
-ssh hputnam@galaxy.geodata.hawaii.edu
+* Linux poire 3.11.0-26-generic #45~precise1-Ubuntu SMP Tue Jul 15 04:02:35 UTC 2014 x86_64 x86_64 x86_64 GNU/Linux
+
+* @galaxy.geodata.hawaii.edu
 
 ### Program List and Versions
 * fastqc
@@ -14,6 +16,7 @@ ssh hputnam@galaxy.geodata.hawaii.edu
 * ncbi-blast-2.6.0+
 * TransDecoder-3.0.1
 * DESeq2
+* InterProScan
 
 
 ### Upload data to server
@@ -386,31 +389,37 @@ Need to look at blast hits for remaining 216033 transcripts... Is Pinzon et al a
 
 # Annotation with Trinotate
 
-####Build Databases
+#### Build Databases
 
 ```/home/hputnam/programs/Trinotate-3.0.1/admin/Build_Trinotate_Boilerplate_SQLite_db.pl  Trinotate```
 
 
 ```/home/hputnam/programs/ncbi-blast-2.6.0+/bin/makeblastdb -in uniprot_sprot.pep -dbtype prot```
 
-####BLASTx
+#### BLASTx
+
 ```nohup /home/hputnam/programs/ncbi-blast-2.6.0+/bin/blastx -query /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta -db /home/hputnam/programs/Trinotate-3.0.1/uniprot_sprot.pep -num_threads 30 -max_target_seqs 1 -outfmt 6 > blastx.outfmt6```
 
 #### TransDecoder
+
 ```nohup /home/hputnam/programs/TransDecoder-3.0.1/TransDecoder.LongOrfs -t /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta```
 
 ```nohup /home/hputnam/programs/TransDecoder-3.0.1/TransDecoder.Predict --cpu 30 -t /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta```
 
 #### BLASTp
+
 ```nohup /home/hputnam/programs/ncbi-blast-2.6.0+/bin/blastp -query /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep -db /home/hputnam/programs/Trinotate-3.0.1/uniprot_sprot.pep -num_threads 30 -max_target_seqs 1 -outfmt 6 > blastp.outfmt6```
 
 #### HMMER
+
 ```nohup /home/hputnam/programs/hmmer-3.1b2-linux-intel-x86_64/binaries/hmmscan --cpu 30 --domtblout TrinotatePFAM.out /home/hputnam/programs/Trinotate-3.0.1/Pfam-A.hmm /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep > pfam.log```
 
 #### signalP
+
 ```nohup /home/hputnam/programs/signalp-4.1/signalp -f short -n signalp.out /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep```
 
 #### tmHMM
+
 ```nohup /home/hputnam/programs/tmhmm-2.0c/bin/tmhmm --short < /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep > tmhmm.out```
 
 #### RNAMMER
@@ -422,6 +431,7 @@ Need to look at blast hits for remaining 216033 transcripts... Is Pinzon et al a
 ```/home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/util/support_scripts/get_Trinity_gene_to_trans_map.pl /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta >  Trinity.fasta.gene_trans_map```
 
 #### Load transcripts and coding regions
+
 ```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite init --gene_trans_map /home/hputnam/Mcap_Spawn/Annot/SQL_DB/Trinity.fasta.gene_trans_map --transcript_fasta /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta --transdecoder_pep /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep```
 
 #### Load BLAST homologies
@@ -450,12 +460,90 @@ Need to look at blast hits for remaining 216033 transcripts... Is Pinzon et al a
 ```scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Annot/SQL_DB/trinotate_annotation_report.xls /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data```
 
 
+#### InterProScan
+
+* https://github.com/ebi-pf-team/interproscan
+* interproscan-5.23-62.0
+* panther-data-11.1
+
+* ftp://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/5.24-63.0/interproscan-5.24-63.0-64-bit.tar.gz
+
+
+input file 
+* /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep
+
+```mkdir IPS```
+
+##### run a test of IPS on IPS test data in installation file
+
+```~/programs/my_interproscan/interproscan-5.23-62.0/interproscan.sh -i ~/programs/my_interproscan/interproscan-5.23-62.0/test_proteins.fasta -f tsv```
+
+* test was successful except new version of IPS is available
+* The version of InterProScan you are using is 5.23-62.0
+* The version of the lookup service you are using is 5.24-63.0
+* As the data in these versions is not the same, you cannot use this match lookup service.
+
+### Prepare data for input to IPS
+
+##### Prepare input file by Removing astrix
+```sed 's_*__g' /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep > ISP.input.predicted.pep```
+
+##### run a test of IPS on our data 
+
+```nano Mcap_test.pep```
+
+```~/programs/my_interproscan/interproscan-5.23-62.0/interproscan.sh -i Mcap_test.pep -f tsv```
+
+The version of InterProScan you are using is 5.23-62.0
+The version of the lookup service you are using is 5.24-63.0
+As the data in these versions is not the same, you cannot use this match lookup service.
+InterProScan will now run locally
+If you would like to use the match lookup service, you have the following options:
+i) Download the newest version of InterProScan5 from our FTP site by following the instructions on:
+   https://www.ebi.ac.uk/interpro/interproscan.html
+ii) Download the match lookup service for your version of InterProScan from our FTP site and install it locally.
+    You will then need to edit the following property in your configuration file to point to your local installation:
+    precalculated.match.lookup.service.url=
+
+In the meantime, the analysis will continue to run locally
+
+* addressed this with -dp disable precalculation
+
+##### Reset the number of processors used
+
+```nano ~/programs/my_interproscan/interproscan-5.23-62.0/interproscan.properties```
+
+* reset to: 
+* number.of.embedded.workers=19
+* maxnumber.of.embedded.workers=20
+
+##### Run IPS
+
+```nohup ~/programs/my_interproscan/interproscan-5.23-62.0/interproscan.sh \
+-d ~/Mcap_Spawn/Annot/IPS \
+-dp \
+-i ISP.input.predicted.pep \
+-f tsv```
+
+
+# Integrate Trinotate with IPS
 
 
 
 
 
 
+
+
+
+
+
+##### Software carpentry SQL query Programming from databases R
+* https://swcarpentry.github.io/sql-novice-survey/11-prog-R/
+* Load as database
+* joins
+* tidying
+### joins in R
 
 
 
