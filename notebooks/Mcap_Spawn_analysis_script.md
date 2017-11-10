@@ -398,7 +398,7 @@ read count = 80,109,608
 # Check Trinity Assembly Stats
 ```/home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/util/TrinityStats.pl /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta > /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.Summary.txt```
 
-#Run BSUSCO on Trinity.fasta 
+#Run BUSCO on Trinity.fasta 
 * http://busco.ezlab.org/files/BUSCO_userguide.pdf
 
 ## Assessing assembly and annotation completeness with Benchmarking Universal Single-Copy Orthologs
@@ -471,6 +471,12 @@ done'```
 ```/home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/util/abundance_estimates_to_matrix.pl --est_method RSEM --out_prefix isoforms_counts_matrix *.isoforms.results```
 
 ```/home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/util/abundance_estimates_to_matrix.pl --est_method RSEM --out_prefix adult_bundle_isoforms_counts_matrix  /home/hputnam/Mcap_Spawn/RSEM/*.isoforms.results /home/hputnam/Mcap_Spawn/Data/Bundles/RSEM/*.isoforms.results```
+
+
+# STAR Align to Genome
+
+## Generate genome index
+## Map Reads 
 
 
 
@@ -594,7 +600,12 @@ Explanation
 
     c[$1$2]>0 : the else block will only be executed if this is the second file so we check whether fields 1 and 2 of this file have already been seen (c[$1$2]>0) and if they have been, we print the line. In awk, the default action is to print the line so if c[$1$2]>0 is true, the line will be printed.
 
+# KEGG
 
+* http://www.genome.jp/kaas-bin/kaas_main?mode=interactive
+hsa, mmu, rno, dre, dme, cel, ath, sce, ago, cal, spo, ecu, pfa, cho, ehi, eco, nme, hpy, bsu, lla, mge, mtu, syn, aae, mja, ape, nve, hmg
+
+http://www.genome.jp/kaas-bin/kaas_main?mode=user&id=1509938042&key=7nAvo0P5
 
 
 
@@ -642,7 +653,7 @@ scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Annot/blastx.outf
 
 #### Transdecoder Predict
 
-nohup /home/hputnam/programs/TransDecoder-3.0.1/TransDecoder.Predict --cpu 40 -t /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta  --retain_pfam_hits /home/hputnam/Mcap_Spawn/Annot/HMM TrinotatePFAM.out retain_blastp_hits /home/hputnam/Mcap_Spawn/Annot/BLAST/blastp.outfmt6```
+```nohup /home/hputnam/programs/TransDecoder-3.0.1/TransDecoder.Predict --cpu 40 -t /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta  --retain_pfam_hits /home/hputnam/Mcap_Spawn/Annot/HMM/TrinotatePFAM.out --retain_blastp_hits /home/hputnam/Mcap_Spawn/Annot/BLAST/blastp.outfmt6```
 
 ***"The final coding region predictions will now include both those regions that have sequence characteristics consistent with coding regions in addition to those that have demonstrated blast homology or pfam domain content"***
 
@@ -653,7 +664,7 @@ nohup /home/hputnam/programs/TransDecoder-3.0.1/TransDecoder.Predict --cpu 40 -t
 ```mkdir SignalP```
 ```cd SignalP```
 
-```nohup /home/hputnam/programs/signalp-4.1/signalp -f short -n signalp.out /home/hputnam/Mcap_Spawn/Annot/Transdecoder/Trinity.fasta.transdecoder_dir/longest_orfs.pep```
+ ~/programs/signalp-4.1/signalp -f short -n signalp.out ~/Mcap_Spawn/Annot/Transdecoder/Trinity.fasta.transdecoder.pep```
 
 * Changed script to max input of 1,000,000 seqs
 
@@ -661,7 +672,7 @@ nohup /home/hputnam/programs/TransDecoder-3.0.1/TransDecoder.Predict --cpu 40 -t
 ```mkdir tmHMM```
 ```cd tmHMM```
 
-```nohup /home/hputnam/programs/tmhmm-2.0c/bin/tmhmm --short < /home/hputnam/Mcap_Spawn/Annot/Transdecoder/Trinity.fasta.transdecoder_dir/longest_orfs.pep > tmhmm.out```
+```nohup /home/hputnam/programs/tmhmm-2.0c/bin/tmhmm --short < ~/Mcap_Spawn/Annot/Transdecoder/Trinity.fasta.transdecoder.pep > tmhmm.out```
 
 #### RNAMMER
 ```mkdir RNAMMER```
@@ -671,61 +682,90 @@ nohup /home/hputnam/programs/TransDecoder-3.0.1/TransDecoder.Predict --cpu 40 -t
 
 
 # Build Trinotate SQLite Database
+~/Mcap_Spawn/Annot/Trinotate
 
-* Need to rebuild... 
 
-/home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/util/support_scripts/get_Trinity_gene_to_trans_map.pl /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta >  Trinity.fasta.gene_trans_map```
+```/home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/util/support_scripts/get_Trinity_gene_to_trans_map.pl /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta >  Trinity.fasta.gene_trans_map```
 
 #### Load transcripts and coding regions
 
-/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite init --gene_trans_map /home/hputnam/Mcap_Spawn/Annot/SQL_DB/Trinity.fasta.gene_trans_map --transcript_fasta /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta --transdecoder_pep /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep```
+```~/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite init --gene_trans_map ~/Mcap_Spawn/Annot/Trinotate/Trinity.fasta.gene_trans_map --transcript_fasta ~/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta --transdecoder_pep ~/Mcap_Spawn/Annot/Transdecoder/Trinity.fasta.transdecoder.pep```
 
 #### Load BLAST homologies
-/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_swissprot_blastx /home/hputnam/Mcap_Spawn/Annot/blastx.outfmt6```
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_swissprot_blastx /home/hputnam/Mcap_Spawn/Annot/BLAST/blastx.outfmt6```
 
-/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_swissprot_blastp /home/hputnam/Mcap_Spawn/Annot/pep/blastp.outfmt6```
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_swissprot_blastp /home/hputnam/Mcap_Spawn/Annot/BLAST/blastp.outfmt6```
 
 #### Load PFAM 
 
-home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_pfam /home/hputnam/Mcap_Spawn/Annot/HMM/TrinotatePFAM.out```
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_pfam /home/hputnam/Mcap_Spawn/Annot/HMM/TrinotatePFAM.out```
 
 
 #### Load transmembrane domains
 
-/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_tmhmm /home/hputnam/Mcap_Spawn/Annot/tmHH/tmhmm.out```
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_tmhmm ~/Mcap_Spawn/Annot/tmHMM/tmhmm.out```
 
 #### Load signal peptide predictions
 
-/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_signalp /home/hputnam/Mcap_Spawn/Annot/SP/signalp.out```
+/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_signalp ~/Mcap_Spawn/Annot/SignalP/signalp.out```
+
+
 
 #### Output Annotation Report
 
-/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite report > trinotate_annotation_report.xls```
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite report --incl_pep --incl_trans > trinotate_annotation_report.xls```
 
-scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Annot/SQL_DB/trinotate_annotation_report.xls /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data```
+```scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Annot/Trinotate/trinotate_annotation_report.xls /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data```
+
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite report > trinotate_annotation_report_wo_seq.xls```
+
+```scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Annot/Trinotate/trinotate_annotation_report_wo_seq.xls /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data```
 
 #### Extract GO terms 
 
-/home/hputnam/programs/Trinotate-3.0.1/util/extract_GO_assignments_from_Trinotate_xls.pl \
---Trinotate_xls /home/hputnam/Mcap_Spawn/Annot/SQL_DB/trinotate_annotation_report.xls \
+```/home/hputnam/programs/Trinotate-3.0.1/util/extract_GO_assignments_from_Trinotate_xls.pl \
+--Trinotate_xls /home/hputnam/Mcap_Spawn/Annot/Trinotate/trinotate_annotation_report.xls \
 -T \
-> /home/hputnam/Mcap_Spawn/Annot/SQL_DB/go_annotations.txt```
+> /home/hputnam/Mcap_Spawn/Annot/Trinotate/go_annotations.txt```
 
-sed 's/,/;/g' /home/hputnam/Mcap_Spawn/Annot/SQL_DB/go_annotations.txt > GO_for_MWU.txt```
+```sed 's/,/;/g' /home/hputnam/Mcap_Spawn/Annot/Trinotate/go_annotations.txt > GO_for_MWU.txt```
 
-scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Annot/SQL_DB/GO_for_MWU.txt /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data```
+```scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Annot/Trinotate/GO_for_MWU.txt /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data```
 
-scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Annot/SQL_DB/go_annotations.txt /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data```
+```scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Annot/Trinotate/go_annotations.txt /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data```
 
 ##### Extract Gene Lengths
-/home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/util/misc/fasta_seq_length.pl  /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta > /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta.seq_lens```
+```/home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/util/misc/fasta_seq_length.pl  /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta > /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta.seq_lens```
 
-/home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/util/misc/TPM_weighted_gene_length.py  \
---gene_trans_map /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta.gene_trans_map \
+```/home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/util/misc/TPM_weighted_gene_length.py  \
+--gene_trans_map ~/Mcap_Spawn/Annot/Trinotate/Trinity.fasta.gene_trans_map \
 --trans_lengths /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta.seq_lens \
 --TPM_matrix /home/hputnam/Mcap_Spawn/RSEM/isoforms_counts_matrix.TMM.EXPR.matrix > /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.gene_lengths.txt```
 
-scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta.seq_lens /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data```
+```scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta.seq_lens /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
