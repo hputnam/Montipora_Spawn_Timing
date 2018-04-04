@@ -24,6 +24,15 @@ library("pathview")
 #biocLite("goseq")
 library("goseq")
 library("GO.db")
+library("UpSetR")
+library("reshape2")
+library(lattice)
+library(latticeExtra)
+#library("grid")
+#library("gridExtra")
+#biocLite("KEGGgraph")
+#library("KEGGgraph")
+
 
 #############################################################
 setwd("/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data") #set working directory
@@ -37,9 +46,23 @@ tfil <- genefilter(counts, filt) #create filter for the counts data
 keep <- counts[tfil,] #identify transcripts to keep by count filter
 gn.keep <- rownames(keep) #identify transcript list
 counts.5x <- as.matrix(counts[which(rownames(counts) %in% gn.keep),]) #data filtered in PoverA, P percent of the samples have counts over A
+write.csv(counts.5x, file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/filtered_counts.csv")
+#ft.counts <- rlog(counts.5x, blind=FALSE)
+#write.csv(ft.counts, file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/filtered_transformed_counts.csv")
 storage.mode(counts.5x) = "integer" #store counts data as integer
 sample.info <- read.csv(file="sample_description.csv", header=T, sep=",", row.names=1) #load sample info
 sample.info$group <- factor(paste0(sample.info$Spawn, sample.info$Time)) #merge condition and time into group
+annot <- read.csv("trinotate_annotation_report_wo_seq.csv", header=T, sep=",") #biological annotation information
+colnames(annot)[2] <- "Transcript.ID"
+coral <- read.csv("Taxa/coral.outfmt6", header=F, sep="") #taxonomic annotation information
+colnames(coral) <- c("Transcript.ID", "coral_subject_id", "coral_pct_identity", "coral_aln_length", "coral_n_of_mismatches", "coral_gap_openings", "coral_q_start", "coral_q_end","coral_s_start", "coral_s_end", "coral_e_value", "coral_bit_score")
+sym <- read.csv("Taxa/sym.outfmt6", header=F, sep="") #taxonomic annotation information
+colnames(sym) <- c("Transcript.ID", "sym_subject_id", "sym_pct_identity", "sym_aln_length", "sym_n_of_mismatches", "sym_gap_openings", "sym_q_start", "sym_q_end","sym_s_start", "sym_s_end", "sym_e_value", "sym_bit_score")
+bact <- read.csv("Taxa/bacteria.outfmt6", header=F, sep="") #taxonomic annotation information
+colnames(bact) <- c("Transcript.ID", "bact_subject_id", "bact_pct_identity", "bact_aln_length", "bact_n_of_mismatches", "bact_gap_openings", "bact_q_start", "bact_q_end","bact_s_start", "bact_s_end", "bact_e_value", "bact_bit_score")
+vir <-  read.csv("Taxa/viruses.outfmt6", header=F, sep="") #taxonomic annotation information
+colnames(vir) <- c("Transcript.ID", "vir_subject_id", "vir_pct_identity", "vir_aln_length", "vir_n_of_mismatches", "vir_gap_openings", "vir_q_start", "vir_q_end","vir_s_start", "vir_s_end", "vir_e_value", "vir_bit_score")
+
 data <- DESeqDataSetFromMatrix(countData = counts.5x, colData = sample.info, design = ~ group) #create a DESeqDataSet object
 
 # Expression Visualization
@@ -59,7 +82,7 @@ plotPCA(rld, intgroup = c("Spawn", "Time")) #plot PCA of samples with all data
 
 # Differential Gene Expression Analysis
 #Interaction Test: test of the factor of "group" with all combinations of the original factors as groups
-DEG.int <- DESeq(data) #run differential expression test by group using the wald test (Does this filter out the low read counts, or is this DESeq2?)
+DEG.int <- DESeq(data) #run differential expression test by group using the wald test 
 DEG.int.res <- results(DEG.int) #save DE results
 resultsNames(DEG.int) #view DE results
 sig.num <- sum(DEG.int.res$padj <0.05, na.rm=T) #identify the number of significant p values with 5%FDR (padj<0.05)
@@ -74,24 +97,233 @@ PCA.plot <- plotPCA(rsig, intgroup = c("Spawn", "Time")) #Plot PCA of all sample
 PCA.plot #view plot
 PC.info <-PCA.plot$data #extract plotting data
 pdf(file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/PCA.DEG.pdf")
-plot(PC.info$PC1, PC.info$PC2, xlim=c(-50,50), ylim=c(-16, 10), xlab="PC1 86%", ylab="PC2 5%", pch = c(15, 16, 17, 18)[as.numeric(sample.info$Time)], col=c("black", "gray")[sample.info$Spawn], cex=1.3)
-legend(x="topleft", 
+plot(PC.info$PC1, PC.info$PC2, xlim=c(-50,50), ylim=c(-16, 10), xlab="PC1 86%", ylab="PC2 5%", col = c("lightpink2", "steelblue1","yellow3")[as.numeric(PC.info$Time)], pch=c(16, 17)[as.numeric(PC.info$Spawn)], cex=1.3)
+legend(x="top", 
        bty="n",
-       legend = c("00:00", "18:00", "20:00"),
-       pch = c(15, 16, 17, 18),
-       col=c("black", "black", "black"),
+       legend = c("00:00", "18:00", "20:00", "Not Spawning", "Spawning"),
+       text.col = c("lightpink2","steelblue1","yellow3", "black", "black"),
+       pch = c(15, 15, 15, 16, 17),
+       col = c("white","white","white", "black", "black"),
        cex=1)
 dev.off()
 
 topVarGenes <- head(order(rowVars(assay(rsig)),decreasing=TRUE),sig.num) #sort by decreasing sig
 mat <- assay(rsig)[ topVarGenes, ] #make an expression object
 mat <- mat - rowMeans(mat) #difference in expression compared to average across all samples
+col.order <- c("T4.17.includes.adapter_S1","T4.1.includes.adapter_S1","T4.6.includes.adapter_S1",
+               "T5.17.includes.adapter_S2","T5.1.includes.adapter_S2","T5.6.includes.adapter_S2",
+               "T7.17.includes.adapter_S3","T7.1.includes.adapter_S3","T7.6.includes.adapter_S3",
+               "T4.10.includes.adapter_S1","T4.16.includes.adapter_S1","T4.8.includes.adapter_S1",
+               "T5.10.includes.adapter_S2","T5.16.includes.adapter_S2","T5.8.includes.adapter_S2",
+               "T7.10.includes.adapter_S3","T7.16.includes.adapter_S3","T7.8.includes.adapter_S3")
+mat <- mat[,col.order]
 df <- as.data.frame(colData(rsig)[,c("Spawn","Time")]) #make dataframe
-jpeg(file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/DEG_Heatmap.jpg")
+df <- df[order(df$Spawn),]
+pdf(file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/DEG_Heatmap.pdf")
 pheatmap(mat, annotation_col=df, clustering_method = "average", 
-         clustering_distance_rows="euclidean", show_rownames =F, 
+         clustering_distance_rows="euclidean", show_rownames =FALSE, cluster_cols=F,
          show_colnames =F) #plot heatmap of all DEG by group
 dev.off()
+
+
+#check for optimal number of clusters for reporting expression patterns
+set.seed(123) 
+k.max <- 10 # Compute and plot wss for k = 2 to k = 10
+wss <- sapply(1:k.max, function(k){kmeans(mat, k, nstart=50,iter.max = 15 )$tot.withinss}) #within sum of squares
+#plot percentage of variance explained as a function of the number of clusters
+plot(1:k.max, wss,
+     type="b", pch = 19, frame = FALSE, 
+     xlab="Number of clusters K",
+     ylab="Total within-clusters sum of squares")
+
+
+#set annotation colors on heatmap factors
+ann_colors <- list(Spawn = c(YES="darkorange", NO="burlywood4"), Time = c("18:00"="steelblue1", "20:00"="yellow3", "0:00"="lightpink2"))
+#"lightpink2", "yellow3", "steelblue1"
+
+#save heatmap results
+DEG.Heat.res <- pheatmap(mat, color = colorRampPalette(c("darkblue", "cyan", "yellow"))(100), annotation_col=df, annotation_colors =ann_colors, clustering_method = "average", 
+                clustering_distance_rows="euclidean", show_rownames =FALSE, 
+                show_colnames =F)
+#set optimal cluster number based on results above
+knum <-6
+DEG.clust <- cbind(mat, cluster = cutree(DEG.Heat.res$tree_row, k = knum))[DEG.Heat.res$tree_row[["order"]]]
+DEG.clust <- as.data.frame(DEG.clust)
+cluster.order <- cbind(mat[c(DEG.Heat.res$tree_row[["order"]]),DEG.Heat.res$tree_col[["order"]]],cluster=cutree(DEG.Heat.res$tree_row, k=knum)[DEG.Heat.res$tree_row[["order"]]])
+
+cluster.order <- as.data.frame(cluster.order)
+DEG.clust1 <- cluster.order[cluster.order$cluster == '1',]
+DEG.clust1 <- DEG.clust1[,-19] 
+DEG.clust2 <- cluster.order[cluster.order$cluster == '2',]
+DEG.clust2 <- DEG.clust2[,-19] 
+DEG.clust3 <- cluster.order[cluster.order$cluster == '3',]
+DEG.clust3 <- DEG.clust3[,-19] 
+DEG.clust4 <- cluster.order[cluster.order$cluster == '4',]
+DEG.clust4 <- DEG.clust4[,-19] 
+DEG.clust5 <- cluster.order[cluster.order$cluster == '5',]
+DEG.clust5 <- DEG.clust5[,-19] 
+DEG.clust6 <- cluster.order[cluster.order$cluster == '6',]
+DEG.clust6 <- DEG.clust6[,-19] 
+
+CL1 <- t(DEG.clust1)
+CL1 <- CL1[ order(row.names(CL1)), ]
+sample.info <- sample.info[order(row.names(sample.info)), ]
+CL1 <- cbind(CL1, sample.info)
+
+CL2 <- t(DEG.clust2)
+CL2 <- CL2[ order(row.names(CL2)), ]
+sample.info <- sample.info[order(row.names(sample.info)), ]
+CL2 <- cbind(CL2, sample.info)
+
+CL3 <- t(DEG.clust3)
+CL3 <- CL3[ order(row.names(CL3)), ]
+sample.info <- sample.info[order(row.names(sample.info)), ]
+CL3 <- cbind(CL3, sample.info)
+
+CL4 <- t(DEG.clust4)
+CL4 <- CL4[ order(row.names(CL4)), ]
+sample.info <- sample.info[order(row.names(sample.info)), ]
+CL4 <- cbind(CL4, sample.info)
+
+CL5 <- t(DEG.clust5)
+CL5 <- CL5[ order(row.names(CL5)), ]
+sample.info <- sample.info[order(row.names(sample.info)), ]
+CL5 <- cbind(CL5, sample.info)
+
+CL6 <- t(DEG.clust6)
+CL6 <- CL6[ order(row.names(CL6)), ]
+sample.info <- sample.info[order(row.names(sample.info)), ]
+CL6 <- cbind(CL6, sample.info)
+
+cluster1 <- melt(CL1, id=c("Spawn", "Time","TimePoint", "Stage", "Rep", "group"), value.name="Rel.Exp") 
+cluster2 <- melt(CL2, id=c("Spawn", "Time","TimePoint", "Stage", "Rep", "group"), value.name="Rel.Exp") 
+cluster3 <- melt(CL3, id=c("Spawn", "Time","TimePoint", "Stage", "Rep", "group"), value.name="Rel.Exp") 
+cluster4 <- melt(CL4, id=c("Spawn", "Time","TimePoint", "Stage", "Rep", "group"), value.name="Rel.Exp")
+cluster5 <- melt(CL5, id=c("Spawn", "Time","TimePoint", "Stage", "Rep", "group"), value.name="Rel.Exp")
+cluster6 <- melt(CL6, id=c("Spawn", "Time","TimePoint", "Stage", "Rep", "group"), value.name="Rel.Exp")
+
+C1.means <- aggregate(Rel.Exp ~ Spawn + TimePoint, data = cluster1, mean, na.rm = TRUE)
+C2.means <- aggregate(Rel.Exp ~ Spawn + TimePoint, data = cluster2, mean, na.rm = TRUE)
+C3.means <- aggregate(Rel.Exp ~ Spawn + TimePoint, data = cluster3, mean, na.rm = TRUE)
+C4.means <- aggregate(Rel.Exp ~ Spawn + TimePoint, data = cluster4, mean, na.rm = TRUE)
+C5.means <- aggregate(Rel.Exp ~ Spawn + TimePoint, data = cluster5, mean, na.rm = TRUE)
+C6.means <- aggregate(Rel.Exp ~ Spawn + TimePoint, data = cluster6, mean, na.rm = TRUE)
+
+#Want to plot expression plots for each cluster with all data points and lines of mean of cluster
+#need to change order of x axis to 18, 20, 00
+#need to create set colors and legends for SP vs NSP
+#YES="burlywood4", NO="darkorange"
+pdf(file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/Clusters.pdf", width=2, height=11, useDingbats = FALSE)
+par(mfrow=c(6,1))
+par(mai=c(0.3,0.1,0,0.3))
+#sets the bottom, left, top and right margins respectively of the plot region in number of lines of text.
+
+boxplot(Rel.Exp ~ Spawn * TimePoint, data=cluster1, col=c("burlywood4", "darkorange") ,  xaxt="n", yaxt="n", ylim=c(-6,6))
+axis(4)
+#stripchart(cluster1$Rel.Exp ~ cluster1$Spawn * cluster1$TimePoint, add=T, method = "jitter", jitter = 0.1, vertical = T, pch=16, cex=0.2, col="black")
+#points(C1.means$Rel.Exp,   col="black", pch=15, cex=1)
+
+boxplot(Rel.Exp ~ Spawn * TimePoint, data=cluster3, col=c("burlywood4", "darkorange") ,  xaxt="n", yaxt="n", ylim=c(-6,6))
+axis(4)
+#stripchart(cluster3$Rel.Exp ~ cluster3$Spawn * cluster3$TimePoint, add=T, method = "jitter", jitter = 0.1, vertical = T, pch=16, cex=0.2, col="black")
+#points(C3.means$Rel.Exp,   col="black",pch=15, cex=1)
+
+boxplot(Rel.Exp ~ Spawn * TimePoint, data=cluster2, col=c("burlywood4", "darkorange") ,  xaxt="n", yaxt="n", ylim=c(-6,6))
+axis(4)
+#stripchart(cluster2$Rel.Exp ~ cluster2$Spawn * cluster2$TimePoint, add=T, method = "jitter", jitter = 0.1, vertical = T, pch=16, cex=0.2, col="black")
+#points(C2.means$Rel.Exp,   col="black",pch=15, cex=1)
+
+boxplot(Rel.Exp ~ Spawn * TimePoint, data=cluster5, col=c("burlywood4", "darkorange") ,  xaxt="n", yaxt="n", ylim=c(-6,6))
+axis(4)
+#stripchart(cluster5$Rel.Exp ~ cluster5$Spawn * cluster5$TimePoint, add=T, method = "jitter", jitter = 0.1, vertical = T, pch=16, cex=0.2, col="black")
+#points(C5.means$Rel.Exp,   col="black",pch=15, cex=1)
+
+boxplot(Rel.Exp ~ Spawn * TimePoint, data=cluster6, col=c("burlywood4", "darkorange") ,  xaxt="n", yaxt="n", ylim=c(-6,6))
+axis(4)
+#stripchart(cluster6$Rel.Exp ~ cluster6$Spawn * cluster6$TimePoint, add=T, method = "jitter", jitter = 0.1, vertical = T, pch=16, cex=0.2, col="black")
+#points(C6.means$Rel.Exp,   col="black",pch=15, cex=1)
+
+boxplot(Rel.Exp ~ Spawn * TimePoint, data=cluster4, col=c("burlywood4", "darkorange") ,  xaxt="n", yaxt="n", ylim=c(-6,6))
+axis(4)
+axis(1, at = c(1.5 , 3.5 , 5.5), labels = c("18:00","20:00","00:00"), tick=FALSE , cex=2)
+#stripchart(cluster4$Rel.Exp ~ cluster4$Spawn * cluster4$TimePoint, add=T, method = "jitter", jitter = 0.1, vertical = T, pch=16, cex=0.2, col="black")
+#points(C4.means$Rel.Exp,   col="black",pch=15, cex=1)
+dev.off()
+
+row.annots <- as.data.frame(cluster.order$cluster)
+rownames(row.annots) <- rownames(cluster.order)
+
+pdf(file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/DEG_Heatmap.pdf", width=4, height=11)
+pheatmap(mat, color = colorRampPalette(c("darkblue", "cyan", "yellow"))(100), annotation_col=df, annotation_colors =ann_colors, clustering_method = "average", 
+         clustering_distance_rows="euclidean", show_rownames =FALSE,  cutree_rows=6, cluster_cols=F,
+         show_colnames =F) #plot heatmap of all DEG by group
+dev.off()
+
+#Cluster Counts and Annotations
+DEG.clust1
+C1.counts <- as.data.frame(counts.5x[which(rownames(counts.5x) %in% rownames(DEG.clust1)),])
+C1.counts$Transcript.ID <- rownames(C1.counts)
+C1.counts.annot <- merge(C1.counts, annot[!duplicated(annot$Transcript.ID),], by="Transcript.ID")
+C1.counts.annot <- merge(C1.counts.annot, coral[!duplicated(coral$Transcript.ID),], by="Transcript.ID")
+#C1.counts.annot <- merge(C1.counts.annot, sym[!duplicated(sym$Transcript.ID),], by="Transcript.ID")
+#C1.counts.annot <- merge(C1.counts.annot, bact[!duplicated(bact$Transcript.ID),], by="Transcript.ID")
+#C1.counts.annot <- merge(C1.counts.annot, vir[!duplicated(vir$Transcript.ID),], by="Transcript.ID")
+write.csv(C1.counts.annot, file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/Cluster1_rawcounts_annotated.csv")
+
+DEG.clust2
+C2.counts <- as.data.frame(counts.5x[which(rownames(counts.5x) %in% rownames(DEG.clust2)),])
+C2.counts$Transcript.ID <- rownames(C2.counts)
+C2.counts.annot <- merge(C2.counts, annot[!duplicated(annot$Transcript.ID),], by="Transcript.ID")
+C2.counts.annot <- merge(C2.counts.annot, coral[!duplicated(coral$Transcript.ID),], by="Transcript.ID")
+#Lost one transcript ID during merge, need to retain
+#There is no taxonomic annotation for TRINITY_DN57574_c0_g1_i3 
+#C2.counts.annot <- merge(C2.counts.annot, sym[!duplicated(sym$Transcript.ID),], by="Transcript.ID")
+#C2.counts.annot <- merge(C2.counts.annot, bact[!duplicated(bact$Transcript.ID),], by="Transcript.ID")
+#C2.counts.annot <- merge(C2.counts.annot, vir[!duplicated(vir$Transcript.ID),], by="Transcript.ID")
+write.csv(C2.counts.annot, file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/Cluster2_rawcounts_annotated_X.csv")
+
+DEG.clust3
+C3.counts <- as.data.frame(counts.5x[which(rownames(counts.5x) %in% rownames(DEG.clust3)),])
+C3.counts$Transcript.ID <- rownames(C3.counts)
+C3.counts.annot <- merge(C3.counts, annot[!duplicated(annot$Transcript.ID),], by="Transcript.ID")
+C3.counts.annot <- merge(C3.counts.annot, coral[!duplicated(coral$Transcript.ID),], by="Transcript.ID")
+#C3.counts.annot <- merge(C3.counts.annot, sym[!duplicated(sym$Transcript.ID),], by="Transcript.ID")
+#C3.counts.annot <- merge(C3.counts.annot, bact[!duplicated(bact$Transcript.ID),], by="Transcript.ID")
+#C3.counts.annot <- merge(C3.counts.annot, vir[!duplicated(vir$Transcript.ID),], by="Transcript.ID")
+write.csv(C3.counts.annot, file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/Cluster3_rawcounts_annotated.csv")
+
+DEG.clust4
+C4.counts <- as.data.frame(counts.5x[which(rownames(counts.5x) %in% rownames(DEG.clust4)),])
+C4.counts$Transcript.ID <- rownames(C4.counts)
+C4.counts.annot <- merge(C4.counts, annot[!duplicated(annot$Transcript.ID),], by="Transcript.ID")
+C4.counts.annot <- merge(C4.counts.annot, coral[!duplicated(coral$Transcript.ID),], by="Transcript.ID")
+#C4.counts.annot <- merge(C4.counts.annot, sym[!duplicated(sym$Transcript.ID),], by="Transcript.ID")
+#C4.counts.annot <- merge(C4.counts.annot, bact[!duplicated(bact$Transcript.ID),], by="Transcript.ID")
+#C4.counts.annot <- merge(C4.counts.annot, vir[!duplicated(vir$Transcript.ID),], by="Transcript.ID")
+write.csv(C4.counts.annot, file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/Cluster4_rawcounts_annotated.csv")
+
+DEG.clust5
+C5.counts <- as.data.frame(t(counts.5x[which(rownames(counts.5x) %in% rownames(DEG.clust5)),]))
+rownames(C5.counts) <- rownames(DEG.clust5)
+C5.counts$Transcript.ID <- rownames(DEG.clust5)
+C5.counts.annot <- merge(C5.counts, annot[!duplicated(annot$Transcript.ID),], by="Transcript.ID")
+C5.counts.annot <- merge(C5.counts.annot, coral[!duplicated(coral$Transcript.ID),], by="Transcript.ID")
+#C5.counts.annot <- merge(C5.counts.annot, sym[!duplicated(sym$Transcript.ID),], by="Transcript.ID")
+#C5.counts.annot <- merge(C5.counts.annot, bact[!duplicated(bact$Transcript.ID),], by="Transcript.ID")
+#C5.counts.annot <- merge(C5.counts.annot, vir[!duplicated(vir$Transcript.ID),], by="Transcript.ID")
+write.csv(C5.counts.annot, file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/Cluster5_rawcounts_annotated.csv")
+
+DEG.clust6
+C6.counts <- as.data.frame(counts.5x[which(rownames(counts.5x) %in% rownames(DEG.clust6)),])
+C6.counts$Transcript.ID <- rownames(C6.counts)
+C6.counts.annot <- merge(C6.counts, annot[!duplicated(annot$Transcript.ID),], by="Transcript.ID")
+C6.counts.annot <- merge(C6.counts.annot, coral[!duplicated(coral$Transcript.ID),], by="Transcript.ID")
+#C6.counts.annot <- merge(C6.counts.annot, sym[!duplicated(sym$Transcript.ID),], by="Transcript.ID")
+#C6.counts.annot <- merge(C6.counts.annot, bact[!duplicated(bact$Transcript.ID),], by="Transcript.ID")
+#C6.counts.annot <- merge(C6.counts.annot, vir[!duplicated(vir$Transcript.ID),], by="Transcript.ID")
+write.csv(C6.counts.annot, file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/Cluster6_rawcounts_annotated.csv")
+
+
 
 ##### CONTRASTING SPAWNING AND NOT SPAWNING CORALS AT EACH TIME POINT #####
 #pairwise comparisons of DEGs for SP and NSP corals at each collection point
@@ -139,9 +371,9 @@ colnames(a) <- c('18:00', '20:00', '00:00', "Counts") #set catagory names
 #dev.off()
 
 #Group Intersections
-colnames(vennData) <- c("18:00",'20:00', '00:00') #set catagory names
-jpeg(file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/SP_NSP_DEG_Intersections.jpg")
-upset(vennData, sets = c('18:00','20:00', '00:00'), sets.bar.color = c("lightpink2", "yellow3", "steelblue1"), main.bar.color = c("blue", "black", "black", "black", "yellow", "red", "green"), order.by = "degree")
+colnames(vennData) <- c("18:00","20:00", "00:00") #set catagory names
+pdf(file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/SP_NSP_DEG_Intersections.pdf", useDingbats = TRUE)
+upset(vennData, sets = c('18:00','20:00', '00:00'), sets.bar.color = c("lightpink2", "yellow3", "steelblue1"), main.bar.color = c("darkgrey", "black", "black", "black", "steelblue1", "yellow3", "lightpink2"), order.by = "degree")
 dev.off()
 
 #Look for match between all lists
@@ -170,9 +402,6 @@ norm.sig.counts$Transcript.ID <- rownames(norm.sig.counts)
 inters <- merge(intersections, norm.sig.counts, by="Transcript.ID") 
 
 ###### Combine with DE list with annotation data #####
-annot <- read.csv("trinotate_annotation_report_wo_seq.csv", header=T, sep=",")
-colnames(annot)[2] <- "Transcript.ID"
-
 anot.inters <- merge(inters,  annot, by="Transcript.ID") #merge sig intersection list and annotations
 # anot.inters$KG <- sapply(strsplit(as.character(anot.inters$Kegg), split="\\`"), "[", 1)
 # anot.inters$KG <- gsub(".*:","",anot.inters$KG)
@@ -206,11 +435,9 @@ write.csv(annot.unique.00, file="/Users/hputnam/MyProjects/Montipora_Spawn_Timin
 
 ##### GO ENRICHMENT ANALYSIS #####
 
-#Analysis for All DE (both Host and Sym together)
-
-#Would like to make this a for loop to run through 4 files intersection, 18, 20, 00
-
+#Analysis for All DEGs (both Host and Sym together)
 #read in data files
+
 ##### INTERSECTIONS #####
 ALL<-row.names(data) #set the all transcripts list
 DEG <- as.character(intersections$Transcript.ID) #set the enrichment test list
@@ -467,7 +694,9 @@ BP.slim.all
 BP.slim.all  <- BP.slim.all[order(BP.slim.all$Intersection),]
 BP.slim.all$Term <- gsub("biological_process", "unknown", BP.slim.all$Term)
 BP.slim.all
-BP.slim.all <- BP.slim.all[rowSums(BP.slim.all[, -1])>1, ]
+BP.slim.all <- BP.slim.all[rowSums(BP.slim.all[, -1])>3, ]
+BP.slim.all <-head(BP.slim.all,-1)
+
 
 pdf(file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/BP_enrichment_SPvsNO.pdf")
 par(mfrow=c(1,4))
@@ -517,6 +746,7 @@ MF.slim.all  <- MF.slim.all [order(MF.slim.all$Intersection),]
 MF.slim.all$Term <- gsub("molecular_function", "unknown", MF.slim.all$Term)
 MF.slim.all
 MF.slim.all <- MF.slim.all[rowSums(MF.slim.all[, -1])>1, ]
+MF.slim.all <-head(MF.slim.all,-1)
 
 pdf(file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/MF_enrichment_SPvsNO.pdf")
 par(mfrow=c(1,4))
@@ -566,6 +796,7 @@ CC.slim.all  <- CC.slim.all[order(CC.slim.all$Intersection),]
 CC.slim.all$Term <- gsub("cellular_component", "unknown", CC.slim.all$Term)
 CC.slim.all
 CC.slim.all <- CC.slim.all[rowSums(CC.slim.all[, -1])>1, ]
+CC.slim.all <-head(CC.slim.all,-1)
 
 pdf(file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/CC_enrichment_SPvsNO.pdf")
 par(mfrow=c(1,4))
@@ -576,27 +807,32 @@ barplot(CC.slim.all$`20:00`, horiz = T, col="red", xlim=c(0,30), main = "20:00")
 barplot(CC.slim.all$`00:00`, horiz = T, col="green", xlim=c(0,30), main = "00:00")
 dev.off()
 
+##### All Enriched GO Plots #####
 #Plot all Enriched GOs
 pdf(file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/GO_enrichment_SPvsNO.pdf")
-par(mfrow=c(3,4))
-par(mar=c(3,1,1,0), oma = c(0.1, 10, 0.1, 0.5))
-barplot(BP.slim.all$Intersection, horiz = T, col="blue", names.arg=BP.slim.all$Term, las=1, cex.names = 0.4, xlim=c(0,105), main = "ALL")
-barplot(BP.slim.all$`18:00`, horiz = T, col="yellow", xlim=c(0,105), main = "18:00")
-barplot(BP.slim.all$`20:00`, horiz = T, col="red", xlim=c(0,105), main = "20:00")
-barplot(BP.slim.all$`00:00`, horiz = T, col="green", xlim=c(0,105), main = "00:00")
+par(mfrow=c(2,4))
+par(mar=c(3,1,1,0), oma = c(0.1, 15, 0.1, 0.5))
+barplot(BP.slim.all$Intersection, horiz = T, col="black", names.arg=BP.slim.all$Term, las=1, cex.names = 0.4, xlim=c(0,25), main = "ALL")
+text(labels = 'Biological Process', xpd = NA, srt = 90, x=-26, y=15, cex=1)
+barplot(BP.slim.all$`18:00`, horiz = T, col="yellow3", xlim=c(0,25), main = "18:00")
+barplot(BP.slim.all$`20:00`, horiz = T, col="steelblue1", xlim=c(0,25), main = "20:00")
+barplot(BP.slim.all$`00:00`, horiz = T, col="lightpink2", xlim=c(0,25), main = "00:00")
 
-barplot(MF.slim.all$Intersection, horiz = T, col="blue", names.arg=MF.slim.all$Term, las=1, cex.names = 0.6, xlim=c(0,105), main = "ALL")
-barplot(MF.slim.all$`18:00`, horiz = T, col="yellow", xlim=c(0,105), main = "18:00")
-barplot(MF.slim.all$`20:00`, horiz = T, col="red", xlim=c(0,105), main = "20:00")
-barplot(MF.slim.all$`00:00`, horiz = T, col="green", xlim=c(0,105), main = "00:00")
+barplot(MF.slim.all$Intersection, horiz = T, col="black", names.arg=MF.slim.all$Term, las=1, cex.names = 0.6, xlim=c(0,25), main = "ALL")
+text(labels = 'Molecular Function', xpd = NA, srt = 90, x=-26, y=8, cex=1)
+barplot(MF.slim.all$`18:00`, horiz = T, col="yellow3", xlim=c(0,25), main = "18:00")
+barplot(MF.slim.all$`20:00`, horiz = T, col="steelblue1", xlim=c(0,25), main = "20:00")
+barplot(MF.slim.all$`00:00`, horiz = T, col="lightpink2", xlim=c(0,25), main = "00:00")
 
-barplot(CC.slim.all$Intersection, horiz = T, col="blue", names.arg=CC.slim.all$Term, las=1, cex.names = 0.6, xlim=c(0,105), main = "ALL")
-barplot(CC.slim.all$`18:00`, horiz = T, col="yellow", xlim=c(0,105), main = "18:00")
-barplot(CC.slim.all$`20:00`, horiz = T, col="red", xlim=c(0,105), main = "20:00")
-barplot(CC.slim.all$`00:00`, horiz = T, col="green", xlim=c(0,105), main = "00:00")
+# barplot(CC.slim.all$Intersection, horiz = T, col="black", names.arg=CC.slim.all$Term, las=1, cex.names = 0.6, xlim=c(0,25), main = "ALL")
+# text(labels = 'Cellular Component', xpd = NA, srt = 90, x=-26, y=8, cex=1)
+# barplot(CC.slim.all$`18:00`, horiz = T, col="yellow3", xlim=c(0,25), main = "18:00")
+# barplot(CC.slim.all$`20:00`, horiz = T, col="steelblue1", xlim=c(0,25), main = "20:00")
+# barplot(CC.slim.all$`00:00`, horiz = T, col="lightpink2", xlim=c(0,25), main = "00:00")
 dev.off()
 
-########## Timing contrasts #####
+
+########## CONTRASTING CORALS BETWEEN EACH TIME POINT #####
 resultsNames(DEG.int)
 #"Intercept"     "groupNO0.00"   "groupNO18.00"  "groupNO20.00"  "groupYES0.00"  "groupYES18.00" "groupYES20.00"
 
@@ -653,6 +889,11 @@ a <- vennCounts(vennData.NO) # compute classification counts
 colnames(a) <- c('18:00 vs 20:00', '18:00 vs 00:00', '20:00 vs 00:00', "Counts") #set catagory names
 jpeg(file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/Venn.DEG.No.Spawn.jpg")
 vennDiagram(a, main='DEG between Time Points for Nonspawning Corals') #draw venn diagram
+dev.off()
+
+colnames(vennData.NO) <- c('18:00 vs 20:00', '18:00 vs 00:00', '20:00 vs 00:00') #set catagory names
+jpeg(file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/NOSP_Timepoints_DEG_Intersections.jpg")
+upset(vennData.NO, sets = c('18:00 vs 20:00', '18:00 vs 00:00', '20:00 vs 00:00'), order.by = "degree")
 dev.off()
 
 #####
@@ -735,21 +976,34 @@ YES_20_00 <- data.frame(rownames(sig.list.YES_20_00)) #identify DE transcript li
 YES_20_00$YES_20_00.Count <- 1 #assign all transcripts count of 1
 colnames(YES_20_00) <- c("Transcript.ID", "YES_20_00.Count") #name columns
 
-L_18_20 <- merge(YES_18_20, YES_18_00, by="Transcript.ID", all=T ) #merge lists sequentially with YES removal
-L_18_20_00 <- merge(L_18_20, YES_20_00, by="Transcript.ID", all=T ) #merge lists sequentially with YES removal
-L_18_20_00$YES_18_20.Count[is.na(L_18_20_00$YES_18_20.Count)] <- 0 #assign NA=0 count i.e., YESt DE
-L_18_20_00$YES_18_00.Count[is.na(L_18_20_00$YES_18_00.Count)] <- 0 #assign NA=0 count i.e., YESt DE
-L_18_20_00$YES_20_00.Count[is.na(L_18_20_00$YES_20_00.Count)] <- 0 #assign NA=0 count i.e., YESt DE
+Y_18_20 <- merge(YES_18_20, YES_18_00, by="Transcript.ID", all=T ) #merge lists sequentially with YES removal
+Y_18_20_00 <- merge(Y_18_20, YES_20_00, by="Transcript.ID", all=T ) #merge lists sequentially with YES removal
+Y_18_20_00$YES_18_20.Count[is.na(Y_18_20_00$YES_18_20.Count)] <- 0 #assign NA=0 count i.e., YESt DE
+Y_18_20_00$YES_18_00.Count[is.na(Y_18_20_00$YES_18_00.Count)] <- 0 #assign NA=0 count i.e., YESt DE
+Y_18_20_00$YES_20_00.Count[is.na(Y_18_20_00$YES_20_00.Count)] <- 0 #assign NA=0 count i.e., YESt DE
 
 # Plot Venn Diagram of shared DE between time points
-vennData.YES<-L_18_20_00[,2:4] #set venn data to DE counts only
+vennData.YES<-Y_18_20_00[,2:4] #set venn data to DE counts only
 a <- vennCounts(vennData.YES) # compute classification counts
-a<- a[rowSums(a[, -1])>0, ]
+#a<- a[rowSums(a[, -1])>0, ]
 colnames(a) <- c('18:00 vs 20:00', '18:00 vs 00:00', '20:00 vs 00:00', "Counts") #set catagory names
-a<- a[,-4]
+#a<- a[,-4]
 jpeg(file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/Venn.DEG.YES.Spawn.jpg")
 vennDiagram(a, main='DEG between Time Points for YES spawning Corals') #draw venn diagram
 dev.off()
+
+colnames(vennData.YES) <- c('18:00 vs 20:00', '18:00 vs 00:00', '20:00 vs 00:00') #set catagory names
+jpeg(file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/YESSP_Timepoints_DEG_Intersections.jpg")
+upset(vennData.YES, sets = c('18:00 vs 20:00', '18:00 vs 00:00', '20:00 vs 00:00'), order.by = "degree")
+dev.off()
+
+
+# jpeg(file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/Timepoints_DEG_Intersections.jpg")
+# layout(mat=matrix(c(1,2),nrow=1,ncol=2,byrow=FALSE))
+# upset(vennData.NO, sets = c('18:00 vs 20:00', '18:00 vs 00:00', '20:00 vs 00:00'), order.by = "degree")
+# upset(vennData.YES, sets = c('18:00 vs 20:00', '18:00 vs 00:00', '20:00 vs 00:00'), order.by = "degree")
+# dev.off()
+
 
 #####
 #Look for match between all lists
@@ -760,17 +1014,17 @@ colnames(YES.shared.all)[1] <- "Transcript.ID"
 write.csv(YES.shared.all, file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/DEG_shared_YESSpawn_18_20_00.csv")
 
 #DEG between spawning and YESt spawning corals Found in all time points
-intersections.YES <- subset(L_18_20_00, YES_18_20.Count==1 & YES_18_00.Count==1 & YES_20_00.Count==1) #list DEG found in all time points
+intersections.YES <- subset(Y_18_20_00, YES_18_20.Count==1 & YES_18_00.Count==1 & YES_20_00.Count==1) #list DEG found in all time points
 
 #DEG between YESt spawning corals Unique to each time point
-unique.YES_18_20 <- subset(L_18_20_00, YES_18_20.Count==1 & YES_18_00.Count==0 & YES_20_00.Count==0) #list genes unique to 18:00
-unique.YES_18_00 <- subset(L_18_20_00, YES_18_20.Count==0 & YES_18_00.Count==1 & YES_20_00.Count==0) #list genes unique to 20:00
-unique.YES_20_00 <- subset(L_18_20_00, YES_18_20.Count==0 & YES_18_00.Count==0 & YES_20_00.Count==1) #list genes unique to 00:00
+unique.YES_18_20 <- subset(Y_18_20_00, YES_18_20.Count==1 & YES_18_00.Count==0 & YES_20_00.Count==0) #list genes unique to 18:00
+unique.YES_18_00 <- subset(Y_18_20_00, YES_18_20.Count==0 & YES_18_00.Count==1 & YES_20_00.Count==0) #list genes unique to 20:00
+unique.YES_20_00 <- subset(Y_18_20_00, YES_18_20.Count==0 & YES_18_00.Count==0 & YES_20_00.Count==1) #list genes unique to 00:00
 
 #DEG between spawning and YESt spawning corals Shared unique between pairs
-shared.YES_18_20 <- subset(L_18_20_00, YES_18_20.Count==1 & YES_18_00.Count==1 & YES_20_00.Count==0) #list genes common to 18:00 and 20:00
-shared.YES_18_00 <- subset(L_18_20_00, YES_18_20.Count==1 & YES_18_00.Count==0 & YES_20_00.Count==1) #list genes common to 18:00 and 00:00
-shared.YES_20_00 <- subset(L_18_20_00, YES_18_20.Count==0 & YES_18_00.Count==1 & YES_20_00.Count==1) #list genes common to 20:00 and 00:00
+shared.YES_18_20 <- subset(Y_18_20_00, YES_18_20.Count==1 & YES_18_00.Count==1 & YES_20_00.Count==0) #list genes common to 18:00 and 20:00
+shared.YES_18_00 <- subset(Y_18_20_00, YES_18_20.Count==1 & YES_18_00.Count==0 & YES_20_00.Count==1) #list genes common to 18:00 and 00:00
+shared.YES_20_00 <- subset(Y_18_20_00, YES_18_20.Count==0 & YES_18_00.Count==1 & YES_20_00.Count==1) #list genes common to 20:00 and 00:00
 
 ##### Combine with DE list with annotation data #####
 
@@ -794,15 +1048,23 @@ write.csv(annot.intersect_20_00, file="/Users/hputnam/MyProjects/Montipora_Spawn
 
 
 ##### KEGG #####
-
-#KEGG
-
-anot.inters <- anot.inters[!is.na(anot.inters$KO),]
-#rownames(anot.inters) <- anot.inters$KO
-#anot.inters <- anot.inters[!duplicated(anot.inters$KG),]
-
-keggcode <- "hsa"
-all.DEG.annot <- pathview(gene.data = anot.inters[, 38], gene.idtype = "entrez", pathway.id = "04713", species = keggcode, out.suffix = "intersection")
-
-#example
-#pv.out <- pathview(gene.data = gse16873.d[, 1], pathway.id = "04110",species = "hsa", out.suffix = "gse16873")
+# 
+# #KEGG
+# annot$KO <- sapply(strsplit(as.character(annot$Kegg), split="\\`"), "[", 2)
+# annot$KO <- gsub(".*:","",annot$KO)
+# annots <- annot$KO[!is.na(annot$KO),]
+# KOs <- annot$KO
+# KOs <-KOs[!is.na(KOs)]
+# write.csv(KOs, file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/All.KO.List.csv")
+# 
+# write.csv(anot.inters$KO, file="/Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Output/KO.List.csv")
+# 
+# anot.inters <- anot.inters[!is.na(anot.inters$KO),]
+# #rownames(anot.inters) <- anot.inters$KO
+# #anot.inters <- anot.inters[!duplicated(anot.inters$KG),]
+# 
+# keggcode <- "hsa"
+# all.DEG.annot <- pathview(gene.data = anot.inters[, 38], gene.idtype = "entrez", pathway.id = "04713", species = keggcode, out.suffix = "intersection")
+# 
+# #example
+# #pv.out <- pathview(gene.data = gse16873.d[, 1], pathway.id = "04110",species = "hsa", out.suffix = "gse16873")
