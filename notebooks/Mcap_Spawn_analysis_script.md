@@ -473,15 +473,8 @@ done'```
 ```/home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/util/abundance_estimates_to_matrix.pl --est_method RSEM --out_prefix adult_bundle_isoforms_counts_matrix  /home/hputnam/Mcap_Spawn/RSEM/*.isoforms.results /home/hputnam/Mcap_Spawn/Data/Bundles/RSEM/*.isoforms.results```
 
 
-# STAR Align to Genome
-
-## Generate genome index
-## Map Reads 
-
-
-
 # Statistical analysis and plotting with DESeq2
-* See R script for statistical analysis with DESeq2
+* See R script RAnalysis/Scripts/DEG.R for statistical analysis with DESeq2
 
 ```scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/RSEM/isoforms_counts_matrix.counts.matrix /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data```
 
@@ -490,16 +483,19 @@ done'```
 ```scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Data/Bundles/RSEM/adult_bundle_isoforms_counts_matrix.counts.matrix /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data```
 
 
+* Differential Expression Analysis 
+
+
 # Taxonomic Annotation
 # Split into Host and Symbiodinium and other contigs
 
 
 Coral host reference = Coral.fa
-* A_digitifera.fa obtained from OIST Shinzato et al 
-* Mcavernosa from Matz lab
-* Orbicella from Prada et al 2016
-* Stylophora pistillata from Voolstra et al 2017
-* Mcapitata
+* A_digitifera.fa obtained from OIST Shinzato et al (A_digitifera.fa)
+* Mcavernosa from Matz lab (mcavernosa_genome_gsd1_v06232017.tgz)
+* Orbicella faveolata from Prada et al 2016 (gsd1_racon2.fasta MPSW01.1.fsa_nt)
+* Stylophora pistillata from Voolstra et al 2017 (Spis.genome.scaffold.final.fa)
+* Mcapitata in prep (20170313.mcap.falcon.errd.fasta)
 
 ```cat A_digitifera.fa gsd1_racon2.fasta MPSW01.1.fsa_nt Spis.genome.scaffold.final.fa 20170313.mcap.falcon.errd.fasta > Coral.fa```
 
@@ -579,6 +575,13 @@ Trinity seqs = 776496
 * nohit = 180,915
 
 
+```scp -r hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Annot/Taxa /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data```
+
+
+
+
+
+
 ##### Filter Hits for single assignment per transcript
 
 look for hits that match to multiple databases and create a filter to assign them to only one taxon
@@ -600,12 +603,11 @@ Explanation
 
     c[$1$2]>0 : the else block will only be executed if this is the second file so we check whether fields 1 and 2 of this file have already been seen (c[$1$2]>0) and if they have been, we print the line. In awk, the default action is to print the line so if c[$1$2]>0 is true, the line will be printed.
 
-# KEGG
 
-* http://www.genome.jp/kaas-bin/kaas_main?mode=interactive
-hsa, mmu, rno, dre, dme, cel, ath, sce, ago, cal, spo, ecu, pfa, cho, ehi, eco, nme, hpy, bsu, lla, mge, mtu, syn, aae, mja, ape, nve, hmg
 
-http://www.genome.jp/kaas-bin/kaas_main?mode=user&id=1509938042&key=7nAvo0P5
+
+
+
 
 
 
@@ -709,6 +711,7 @@ scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Annot/blastx.outf
 
 /home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_signalp ~/Mcap_Spawn/Annot/SignalP/signalp.out```
 
+* These are not loading and have been included in an additional file
 
 
 #### Output Annotation Report
@@ -745,6 +748,27 @@ scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Annot/blastx.outf
 ```scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta.seq_lens /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data```
 
 
+## Examine Circadian Rhythm Gene Set
+
+complete analysis of circadian gene set from Vize 2009 to see if any are differentially expressed
+
+Blast Accession against A. digitifera genome
+
+Name | Genbank Accession | A. digitifera ID
+--- | ---
+ bmall	 | BAA76414.1| bhlhb2	 |EDK99412.1| bhlhb3	 |BAB21503.1| cryl	 |BAA19175.1| cry2	 |BAA19864| nrldl	 |BAE23342.1| perl	 |BAA22634.1| per2	 |AAC53592.1| ppm2c	 |AAF04507.1| timeless	| BAA36500.1| clock	 |AAC53200.1| grinl	 |BAE34379.1| vpac2	 |BAA05674.1| csnkld	 |BAB23405.1| csnkle	 |BAA88082.1| creb	 |AAL47130.1| adcyaplrl	 |BAC31372.1| adcyapl	 |BAC37673.1| ckllalpha	 |AAA28429.1| ckllbeta	 |AAM29452.1| dco	 |AAD27857.1| shaggy	 |CAA50213.1| slmb	 |AAF63213.1| vri	 |AB052821.1|
+
+
+**Rosenberg et al 2017 Molecular Ecology Table 1**
+
+Name |A. digitifera ID
+---- | ----
+NLRC4 | adi_v1.04547 NOD1 | adi_v1.08730NOD2 | adi_v1.23390NLRP5 | adi_v1.04676NLRP9  | adi_v1.11732NLRP12  | adi_v1.04037COL22A1 | adi_v1.10229CTSS | adi_v1.22942PTPRS | adi_v1.18882PLEC | adi_v1.11170FBN1 | adi_v1.20308GDF5 | adi_v1.07728CLOCK  | adi_v1.24126BMAL/ARNTL  | adi_v1.21671TIM | adi_v1.17401CRY1  | adi_v1.02780ARNT  | adi_v1.08869CK1  | adi_v1.18113CCNE1  | adi_v1.05245CCNB1  | adi_v1.04845WEE1  | adi_v1.02103CDC6  | adi_v1.06814ORC1  | adi_v1.22438CDC20  | adi_v1.23307ZYX | adi_v1.FN1  | adi_v1.NCAM1  | adi_v1.GALR1  | adi_v1.NPFFR2  | adi_v1.HCRTR1  | adi_v1.AVPR2  | adi_v1.QRFPR  | adi_v1.TRHR  | adi_v1.MTNR1A  | adi_v1.MTNR1B  | adi_v1.NPY1R  | adi_v1.TACR1  | adi_v1.MC2R  | adi_v1.CNR2  | adi_v1.GPR12  | adi_v1.DRD1  | adi_v1.HTRH2  | adi_v1.ADORA2B  | adi_v1.GPR161  | adi_v1.TMEM173  | adi_v1.CYLD  | adi_v1.NLRC5  | adi_v1.NLRC4  | adi_v1.MARCO  | adi_v1.TRAF6  | adi_v1.TRAF4 | adi_v1.E3 Ubiquitin | adi_v1.
+```scp /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data/circadian_gene_set.txt hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Annot/```
+
+makeblastdb -in /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta -dbtype nucl
+
+```/home/hputnam/programs/ncbi-blast-2.6.0+/bin/blastn -query /home/hputnam/Mcap_Spawn/Annot/circadian_gene_set.txt -db /home/hputnam/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta -num_threads 40 -max_target_seqs 1 -outfmt 6 > /home/hputnam/Mcap_Spawn/Annot/circadian.blastn.outfmt6```
 
 
 
@@ -767,81 +791,6 @@ scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Annot/blastx.outf
 
 
 
-
-
-
-#### InterProScan
-* https://github.com/ebi-pf-team/interproscan
-* interproscan-5.23-62.0
-* panther-data-12.0 downloaded 21 October 2017
-* used data folder from version 5.26-65.0 downloaded 21 October 2017
-
-```tar -xvzf interproscan-5.23-62.0-64-bit.tar.gz```
-
-load panther data
-
-```wget ftp://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/data/panther-data-12.0.tar.gz```
-
-```tar -pxvzf panther-data-12.0.tar.gz```
-
-input file 
-* /home/hputnam/Mcap_Spawn/Annot/Transdecoder/Trinity.fasta.transdecoder_dir/longest_orfs.pep
-
-##### IPS Test
-```/home/hputnam/programs/my_interproscan/interproscan-5.23-62.0/interproscan.sh -i /home/hputnam/programs/my_interproscan/interproscan-5.23-62.0/test_proteins.fasta -f tsv -dp```
-
-### Prepare data for input to IPS
-
-##### Prepare input file by Removing astrix
-```mkdir IPS```
-
-```sed 's_*__g' /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep > ISP.input.predicted.pep```
-
-##### run a test of IPS on our data 
-
-```nano Mcap_test.pep```
-
-```~/programs/my_interproscan/interproscan-5.23-62.0/interproscan.sh -i Mcap_test.pep -f tsv```
-
-* chose no lookup this -dp disable precalculation call
-
-##### Reset the number of processors used
-
-```nano ~/programs/my_interproscan/interproscan-5.23-62.0/interproscan.properties```
-
-* reset to: 
-* Number of embedded workers at start time
-number.of.embedded.workers=1
-* Maximum number of embedded workers
-maxnumber.of.embedded.workers=39
-
-##### Run IPS
-
-```nohup ~/programs/my_interproscan/interproscan-5.23-62.0/interproscan.sh \
--d ~/Mcap_Spawn/Annot/IPS \
--dp \
--i ISP.input.predicted.pep \
--f tsv```
-
-
-# Integrate Trinotate with IPS
-
-
-
-
-
-
-
-
-
-
-
-##### Software carpentry SQL query Programming from databases R
-* https://swcarpentry.github.io/sql-novice-survey/11-prog-R/
-* Load as database
-* joins
-* tidying
-### joins in R
 
 
 
