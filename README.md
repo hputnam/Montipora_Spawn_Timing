@@ -13,7 +13,7 @@ This project examines gene expression during the normal spawning timing of coral
 ### NCBI PRJNA376841
 
 **Sample.ID** | **Date** | **Time** | **Spawn** | **Read.ID** | **File.ID** | **Read.Count** | **SRA.ID** | **MD5Sum** 
- ------ | ------ | ------ | ------ | ------ | ------ | ------ 
+ ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------ 
 T4-1 | 6/6/16 | 18:00 | NO | Read1 | T4-1_S1_L001_R1_001.fastq.gz | 3438991 |SRR5311171 | 0d034de745024ef1f3a0a808fb814da2
 T4-1 | 6/6/16 | 18:00 | NO | Read2 | T4-1_S1_L001_R2_001.fastq.gz | 3438991 |SRR5311171 | e6a8619819ae4ebbda76fab1c16d2ee5
 T4-6 | 6/6/16 | 18:00 | NO | Read1 | T4-6_S1_L001_R1_001.fastq.gz | 4070019 |SRR5311306 | d2524a6fd255b15b3e3fb2dfe04b8912
